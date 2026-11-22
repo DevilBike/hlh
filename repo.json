@@ -1,0 +1,16 @@
+[
+  {
+    "Author": "Bike",
+    "Name": "Hunting Log Helper",
+    "InternalName": "HuntingLogHelper",
+    "AssemblyVersion": "0.1.0.0",
+    "Punchline": "Works through your class hunting log for you.",
+    "Description": "Travels to hunting log targets, lets BossMod Reborn and Rotation Solver Reborn fight, verifies completion, and moves on.",
+    "ApplicableVersion": "any",
+    "RepoUrl": "https://github.com/DevilBike/hlh",
+    "DalamudApiLevel": 15,
+    "DownloadLinkInstall": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip",
+    "DownloadLinkTesting": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip"
+  }
+]

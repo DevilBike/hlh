@@ -1,0 +1,61 @@
+name: Release
+
+# Push a tag like v0.1.1 to build, publish a GitHub release, and bump repo.json.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Download Dalamud
+        shell: pwsh
+        run: |
+          $dest = "$env:AppData\XIVLauncher\addon\Hooks\dev"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest-dalamud.zip
+          Expand-Archive -Force latest-dalamud.zip $dest
+
+      - name: Build
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          if ($version.Split('.').Count -eq 3) { $version = "$version.0" }
+          dotnet build HuntingLogHelper/HuntingLogHelper.csproj -c Release -p:Version=$version
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Find package
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -Recurse -Path HuntingLogHelper/bin -Filter latest.zip | Select-Object -First 1
+          if (-not $zip) { throw "latest.zip not found" }
+          Copy-Item $zip.FullName ./latest.zip
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: latest.zip
+
+      - name: Bump repo.json
+        shell: pwsh
+        run: |
+          $repo = Get-Content repo.json -Raw | ConvertFrom-Json
+          $repo[0].AssemblyVersion = $env:VERSION
+          ConvertTo-Json @($repo) -Depth 5 | Set-Content repo.json
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add repo.json
+          git commit -m "Bump repo.json to $env:VERSION" || echo "No change"
+          git push origin HEAD:main

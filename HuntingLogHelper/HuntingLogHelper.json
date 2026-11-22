@@ -1,0 +1,8 @@
+{
+  "Author": "Bike",
+  "Name": "Hunting Log Helper",
+  "Punchline": "Works through your class hunting log for you.",
+  "Description": "Travels to hunting log targets, lets BossMod Reborn and Rotation Solver Reborn fight, verifies completion, and moves on. Requires vnavmesh, Lifestream, BossMod Reborn and Rotation Solver Reborn.",
+  "ApplicableVersion": "any",
+  "Tags": ["hunting log", "automation"]
+}
