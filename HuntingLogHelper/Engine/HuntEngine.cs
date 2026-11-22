@@ -16,11 +16,11 @@ public enum HuntState { Idle, Choosing, Traveling, Searching, Approaching, Fight
 /// </summary>
 public sealed class HuntEngine
 {
-    private const float ScanRange = 45f;
+    private const float ScanRange = 60f;
     private const float EngageRange = 3.5f;
     private static readonly TimeSpan TravelTimeout = TimeSpan.FromSeconds(60);
     private static readonly TimeSpan StuckWindow = TimeSpan.FromSeconds(8);
-    private static readonly TimeSpan VerifyDelay = TimeSpan.FromSeconds(2.5);
+    private static readonly TimeSpan VerifyTimeout = TimeSpan.FromSeconds(3);
     private const int MaxSearchRounds = 4;
 
     private readonly ITargetDatabase db;
@@ -176,7 +176,7 @@ public sealed class HuntEngine
             travel.Stop();
             mob = found;
             Go(HuntState.Approaching, $"Found {t.Name}");
-            WaitRandom(0.2, 0.8); // short human-ish reaction time
+            WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
         }
 
@@ -255,10 +255,9 @@ public sealed class HuntEngine
             if (mob != null && !mob.IsDead && Plugin.TargetManager.Target == null) Plugin.TargetManager.Target = mob;
             return;
         }
-        if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(3)) return; // combat may not have registered yet
+        if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(1)) return; // combat may not have registered yet
         mob = null;
         Go(HuntState.Verifying, "Checking hunting log");
-        waitUntil = DateTime.UtcNow + VerifyDelay;
     }
 
     private void Verify()
@@ -266,16 +265,18 @@ public sealed class HuntEngine
         var t = Current!.Target;
         var left = progress.KillsRemaining(t);
         if (left < 0) return; // log data not ready, try next tick
+        // Move on as soon as the log registers the kill; only wait while the count hasn't changed yet.
+        if (left == Current.KillsRemaining && left > 0 && DateTime.UtcNow - stateSince < VerifyTimeout) return;
         if (left == 0)
         {
             Plugin.Chat.Print($"[HLH] Hunting log: {t.Name} complete.");
             Go(HuntState.Choosing, $"{t.Name} complete");
-            WaitRandom(1.0, 3.0);
+            WaitRandom(0.3, 1.0);
             return;
         }
         Current = Current with { KillsRemaining = left };
         Go(HuntState.Searching, $"{t.Name}: {left} left");
-        WaitRandom(0.5, 2.0);
+        WaitRandom(0.1, 0.5);
     }
 
     private void Skip(string why)
