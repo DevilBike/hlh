@@ -249,12 +249,19 @@ public sealed class HuntEngine
 
     private void Fight()
     {
+        if (!combat.InCombat && mob != null && !mob.IsDead && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(4)
+            && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(5))
+        {
+            combat.Engage(mob); // nudge once if the pull did not start
+            return;
+        }
         if (combat.InCombat)
         {
             // Keep the hunt target selected; BMR/RSR do the rest.
             if (mob != null && !mob.IsDead && Plugin.TargetManager.Target == null) Plugin.TargetManager.Target = mob;
             return;
         }
+        if (mob != null && !mob.IsDead && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(8)) return; // pull not started yet
         if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(1)) return; // combat may not have registered yet
         mob = null;
         Go(HuntState.Verifying, "Checking hunting log");
