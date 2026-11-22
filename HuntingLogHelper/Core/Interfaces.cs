@@ -65,4 +65,6 @@ public interface ICombatController
     /// <summary>Start the fight on a passive mob (e.g. auto-attack). Safe to call again if the pull didn't land.</summary>
     void Pull(IBattleNpc mob);
     void Disengage();
+    /// <summary>After a fight: stop AI movement so only the navmesh moves the character between fights.</summary>
+    void StandDown();
 }

@@ -291,6 +291,7 @@ public sealed class HuntEngine
             {
                 ignored[mob.GameObjectId] = now.AddSeconds(60);
                 travel.Stop();
+                combat.StandDown();
                 Go(HuntState.Searching, $"Could not reach {mob.Name}, looking for another");
                 mob = null;
             }
@@ -320,6 +321,7 @@ public sealed class HuntEngine
         if (mob != null && !mob.IsDead && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(8)) return; // pull not started yet
         if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(1)) return; // combat may not have registered yet
         mob = null;
+        combat.StandDown();
         Go(HuntState.Verifying, "Checking hunting log");
     }
 
