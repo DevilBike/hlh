@@ -5,6 +5,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using System.IO;
 using HuntingLogHelper.Combat;
+using HuntingLogHelper.Core;
 using HuntingLogHelper.Data;
 using HuntingLogHelper.Engine;
 using HuntingLogHelper.Progress;
@@ -24,11 +25,15 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] internal static IFramework Framework { get; private set; } = null!;
     [PluginService] internal static IChatGui Chat { get; private set; } = null!;
     [PluginService] internal static IPluginLog Log { get; private set; } = null!;
+    [PluginService] internal static ICondition Condition { get; private set; } = null!;
+    [PluginService] internal static ITargetManager TargetManager { get; private set; } = null!;
 
     private const string CommandName = "/huntlog";
 
     public Configuration Configuration { get; }
     public HuntEngine Engine { get; }
+    public ITargetDatabase Targets { get; }
+    public ILogProgressReader Progress { get; }
     public readonly WindowSystem WindowSystem = new("HuntingLogHelper");
     private readonly MainWindow mainWindow;
 
@@ -38,9 +43,11 @@ public sealed class Plugin : IDalamudPlugin
 
         // Composition root: the only place that knows which implementation backs each module.
         var dataDir = Path.Combine(PluginInterface.AssemblyLocation.DirectoryName!, "Data");
+        Targets = new JsonTargetDatabase(dataDir);
+        Progress = new GameLogProgressReader();
         Engine = new HuntEngine(
-            new JsonTargetDatabase(dataDir),
-            new GameLogProgressReader(),
+            Targets,
+            Progress,
             new IpcTravelService(Configuration),
             new WanderSearchPattern(),
             new ObjectTableScanner(),
@@ -53,7 +60,7 @@ public sealed class Plugin : IDalamudPlugin
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Open the Hunting Log Helper window.",
+            HelpMessage = "Open the window. /huntlog start | stop",
         });
 
         PluginInterface.UiBuilder.Draw += WindowSystem.Draw;
@@ -77,7 +84,15 @@ public sealed class Plugin : IDalamudPlugin
 
     private void OnFrameworkUpdate(IFramework _) => Engine.Tick();
 
-    private void OnCommand(string command, string args) => ToggleMainUi();
+    private void OnCommand(string command, string args)
+    {
+        switch (args.Trim().ToLowerInvariant())
+        {
+            case "start": Engine.Start(); break;
+            case "stop": Engine.Stop(); break;
+            default: ToggleMainUi(); break;
+        }
+    }
 
     public void ToggleMainUi() => mainWindow.Toggle();
 }

@@ -1,14 +1,33 @@
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using HuntingLogHelper.Core;
 
 namespace HuntingLogHelper.Combat;
 
-/// <summary>Drives BossMod Reborn AI and Rotation Solver Reborn through their commands. Implemented in step 3.</summary>
+/// <summary>
+/// Targets the mob and hands the fight to Rotation Solver Reborn (rotation) and
+/// BossMod Reborn's AI (positioning, dodging), using their chat commands.
+/// </summary>
 public sealed class BmrRsrCombatController : ICombatController
 {
-    public bool InCombat => Plugin.ObjectTable.LocalPlayer?.StatusFlags.HasFlag(
-        Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat) ?? false;
+    private bool engaged;
 
-    public void Engage(IBattleNpc mob) { /* TODO(step 3): target mob, /rotation auto, /bmrai on */ }
-    public void Disengage() { /* TODO(step 3): /rotation off, /bmrai off */ }
+    public bool InCombat => Plugin.Condition[ConditionFlag.InCombat];
+
+    public void Engage(IBattleNpc mob)
+    {
+        Plugin.TargetManager.Target = mob;
+        if (engaged) return;
+        Plugin.CommandManager.ProcessCommand("/rotation auto");
+        Plugin.CommandManager.ProcessCommand("/bmrai on");
+        engaged = true;
+    }
+
+    public void Disengage()
+    {
+        if (!engaged) return;
+        Plugin.CommandManager.ProcessCommand("/rotation off");
+        Plugin.CommandManager.ProcessCommand("/bmrai off");
+        engaged = false;
+    }
 }

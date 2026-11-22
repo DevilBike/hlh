@@ -23,4 +23,25 @@ The plugin is split into modules. Each one does one job and talks to the others 
 4. **Fight:** target it and let BMR and RSR handle combat.
 5. **Verify:** re-read the in-game log. Only move to the next target once the game shows this entry is complete.
 
+## Target data
+
+`HuntingLogHelper/Data/class_targets.json` and `gc_targets.json` are generated, not hand-written:
+
+```
+bash tools/fetch_data.sh
+python3 tools/build_targets.py
+```
+
+The script joins the game's hunting log sheets (MonsterNote, MonsterNoteTarget, BNpcName, PlaceName, Map) from xivapi/ffxiv-datamining with crowd-sourced spawn positions and aetherytes from ffxiv-teamcraft. Instead of one large circle, each target gets the actual spawn points seen in the zone the log names, clustered to the densest spot. When no spawns were recorded, it falls back to the map label of the sub-area the log names (`"Approximate": true`), and the search does a meandering walk there. Targets only found in dungeons are marked `InDuty` and skipped.
+
+## Natural movement
+
+- Search order: drifts between the 3 closest unvisited spawn points, weighted toward the nearest, with 3-7 yalm jitter, so no two runs follow the same path.
+- Random short pauses at about a third of waypoints, small random delays before engaging and after kills.
+- Mounts for trips over about 45 yalms and flies when the zone's aether currents are complete.
+
+## Hunting log progress
+
+The game only stores kill counts for the rank in progress (`MonsterNoteManager.RankData[logIndex]`). Earlier ranks count as complete, later ranks as locked. The engine re-reads the log after each fight and only moves on once the game says the entry is complete. The window's "Debug: raw hunting log" section shows what the plugin reads, to check against the in-game log.
+
 Grand Company log mode is added after the class log mode is confirmed working in-game.
