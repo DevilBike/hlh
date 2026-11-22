@@ -204,9 +204,18 @@ public sealed class HuntEngine
             return;
         }
 
-        if (travel.IsBusy)
+        // Chain to the next waypoint just before arriving so movement flows instead of stop-start.
+        var nearlyThere = pauseAtDest <= 0 && searchDest is { } d && Flat(pos, d) < 6f;
+        if (travel.IsBusy && !nearlyThere)
         {
-            if (CheckStuck(pos)) return;
+            CheckStuck(pos);
+            return;
+        }
+
+        if (pauseAtDest > 0 && !travel.IsBusy)
+        {
+            waitUntil = DateTime.UtcNow.AddSeconds(pauseAtDest); // brief look-around on arrival
+            pauseAtDest = 0;
             return;
         }
 
@@ -218,13 +227,17 @@ public sealed class HuntEngine
         }
 
         var next = waypoints.Dequeue();
+        searchDest = next.Position;
         travel.MoveTo(next.Position, allowMount: Flat(pos, next.Position) > 45f);
         ResetStuck(pos);
         StatusText = $"Searching for {t.Name} (round {searchRounds}/{MaxSearchRounds})";
-        if (next.PauseSeconds > 0) waitUntil = DateTime.UtcNow.AddSeconds(next.PauseSeconds);
+        pauseAtDest = next.PauseSeconds;
     }
 
     private const float DismountRange = 20f;
+    private bool pullRetried;
+    private Vector3? searchDest;
+    private float pauseAtDest;
     private Vector3 approachDest;
     private DateTime lastApproachPath = DateTime.MinValue;
     private readonly Dictionary<ulong, DateTime> ignored = new();
@@ -258,6 +271,7 @@ public sealed class HuntEngine
         if (combat.InCombat)
         {
             combat.Engage(mob);
+            pullRetried = false;
             Go(HuntState.Fighting, $"Fighting {mob.Name}");
             return;
         }
@@ -285,15 +299,16 @@ public sealed class HuntEngine
 
         travel.Stop();
         combat.Engage(mob);
+        pullRetried = false;
         Go(HuntState.Fighting, $"Fighting {mob.Name}");
     }
 
     private void Fight()
     {
-        if (!combat.InCombat && mob != null && !mob.IsDead && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(4)
-            && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(5))
+        if (!combat.InCombat && mob != null && !mob.IsDead && !pullRetried && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(3))
         {
-            combat.Engage(mob); // nudge once if the pull did not start
+            pullRetried = true;
+            combat.Pull(mob); // retry the pull once if it did not land
             return;
         }
         if (combat.InCombat)

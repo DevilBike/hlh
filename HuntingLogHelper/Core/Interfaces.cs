@@ -60,6 +60,9 @@ public interface ITargetScanner
 public interface ICombatController
 {
     bool InCombat { get; }
+    /// <summary>Target the mob and turn the combat plugins on. Call once per fight.</summary>
     void Engage(IBattleNpc mob);
+    /// <summary>Start the fight on a passive mob (e.g. auto-attack). Safe to call again if the pull didn't land.</summary>
+    void Pull(IBattleNpc mob);
     void Disengage();
 }
