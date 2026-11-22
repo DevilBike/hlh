@@ -3,7 +3,6 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using System.IO;
 using HuntingLogHelper.Combat;
 using HuntingLogHelper.Core;
 using HuntingLogHelper.Data;
@@ -42,8 +41,7 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         // Composition root: the only place that knows which implementation backs each module.
-        var dataDir = Path.Combine(PluginInterface.AssemblyLocation.DirectoryName!, "Data");
-        Targets = new JsonTargetDatabase(dataDir);
+        Targets = new JsonTargetDatabase();
         Progress = new GameLogProgressReader();
         Engine = new HuntEngine(
             Targets,
