@@ -16,31 +16,42 @@ public interface ITargetDatabase
 /// <summary>Reads the player's hunting log progress from game memory.</summary>
 public interface ILogProgressReader
 {
-    /// <summary>Kills still needed for this target, or 0 if complete.</summary>
+    /// <summary>Log index (ClassJob.MonsterNote) for a class/job, or -1 if it has no hunting log.</summary>
+    int LogIndexForClassJob(uint classJobId);
+
+    /// <summary>0-based rank the player is currently working on in this log.</summary>
+    int CurrentRank(int logIndex);
+
+    /// <summary>Kills still needed for this target, 0 if complete, or -1 if the game data is not ready.</summary>
     int KillsRemaining(HuntTarget target);
-    bool IsComplete(HuntTarget target) => KillsRemaining(target) == 0;
 }
 
 /// <summary>Gets the player to a zone and to a point inside it (teleport, mount, fly, walk).</summary>
 public interface ITravelService
 {
+    /// <summary>True while teleporting, zoning, mounting or following a path.</summary>
     bool IsBusy { get; }
+    bool IsReady { get; }
     bool IsInZone(uint territoryId);
-    void TravelToZone(uint territoryId);
-    void MoveTo(Vector3 destination);
+    void TravelToZone(HuntArea area);
+    /// <summary>Path to a point. Mounts/flies for long trips when the config allows it.</summary>
+    void MoveTo(Vector3 destination, bool allowMount);
+    void Dismount();
     void Stop();
+    /// <summary>Per-frame housekeeping (e.g. finish a mount-then-move).</summary>
+    void Update();
 }
 
 /// <summary>Produces natural-looking search waypoints inside a target's area.</summary>
 public interface ISearchPattern
 {
-    IEnumerable<Vector3> Waypoints(Vector3 center, float radius);
+    IEnumerable<Waypoint> Waypoints(HuntArea area, Vector3 playerPosition);
 }
 
 /// <summary>Finds a live instance of the target monster near the player.</summary>
 public interface ITargetScanner
 {
-    IBattleNpc? FindNearest(HuntTarget target);
+    IBattleNpc? FindNearest(HuntTarget target, float maxDistance);
 }
 
 /// <summary>Turns BossMod Reborn / Rotation Solver Reborn on and off and reports fight state.</summary>

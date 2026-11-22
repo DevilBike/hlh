@@ -5,6 +5,7 @@
     <Description>Works through your class hunting log automatically.</Description>
     <PackageProjectUrl>https://github.com/DevilBike/hlh</PackageProjectUrl>
     <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Update="Data\**\*.json" CopyToOutputDirectory="PreserveNewest" />

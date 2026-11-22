@@ -1,1 +1,3030 @@
-[]
+[
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000001,
+  "Rank": 0,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 250,
+  "Name": "Amalj'aa hunter",
+  "Level": 18,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 145,
+    "AetheryteId": 18,
+    "Center": [
+     -97.4,
+     294.7
+    ],
+    "Radius": 27.9,
+    "SpawnPoints": [
+     [
+      -69.9,
+      289.7
+     ],
+     [
+      -124.9,
+      299.7
+     ]
+    ],
+    "Observations": 3
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000002,
+  "Rank": 0,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 1354,
+  "Name": "heckler imp",
+  "Level": 2,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000003,
+  "Rank": 0,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1188,
+  "Name": "doctore",
+  "Level": 3,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000004,
+  "Rank": 0,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1194,
+  "Name": "Firemane",
+  "Level": 4,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000005,
+  "Rank": 0,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 231,
+  "Name": "sylvan groan",
+  "Level": 5,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     -230.0,
+     97.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000006,
+  "Rank": 0,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 230,
+  "Name": "sylvan sough",
+  "Level": 6,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     -230.0,
+     97.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000007,
+  "Rank": 0,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 370,
+  "Name": "kobold pickman",
+  "Level": 24,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     -427.1,
+     18.7
+    ],
+    "Radius": 52.8,
+    "SpawnPoints": [
+     [
+      -479.5,
+      25.0
+     ],
+     [
+      -389.6,
+      -5.0
+     ],
+     [
+      -434.6,
+      20.0
+     ],
+     [
+      -404.6,
+      35.0
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000008,
+  "Rank": 0,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 256,
+  "Name": "Amalj'aa bruiser",
+  "Level": 26,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     -18.7,
+     -297.2
+    ],
+    "Radius": 37.5,
+    "SpawnPoints": [
+     [
+      0.0,
+      -329.7
+     ],
+     [
+      -35.0,
+      -284.7
+     ],
+     [
+      0.0,
+      -294.7
+     ],
+     [
+      -40.0,
+      -279.7
+     ]
+    ],
+    "Observations": 9
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000009,
+  "Rank": 0,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 210,
+  "Name": "Ixali straightbeak",
+  "Level": 27,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     64.9,
+     339.7
+    ],
+    "Radius": 26.9,
+    "SpawnPoints": [
+     [
+      54.9,
+      319.7
+     ],
+     [
+      69.9,
+      359.6
+     ],
+     [
+      74.9,
+      364.6
+     ],
+     [
+      50.0,
+      324.7
+     ],
+     [
+      74.9,
+      329.7
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000010,
+  "Rank": 0,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 660,
+  "Name": "Ixali wildtalon",
+  "Level": 30,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     467.0,
+     322.2
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      469.5,
+      324.7
+     ],
+     [
+      464.5,
+      319.7
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000011,
+  "Rank": 1,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 260,
+  "Name": "Amalj'aa divinator",
+  "Level": 32,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 20,
+    "Center": [
+     289.7,
+     729.3
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      289.7,
+      729.3
+     ]
+    ],
+    "Observations": 2
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000012,
+  "Rank": 1,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 369,
+  "Name": "kobold pitman",
+  "Level": 34,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 137,
+    "AetheryteId": 11,
+    "Center": [
+     318.0,
+     218.1
+    ],
+    "Radius": 17.0,
+    "SpawnPoints": [
+     [
+      324.7,
+      204.8
+     ],
+     [
+      314.7,
+      234.8
+     ],
+     [
+      314.7,
+      214.8
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000013,
+  "Rank": 1,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1574,
+  "Name": "temple bat",
+  "Level": 13,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000014,
+  "Rank": 1,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1580,
+  "Name": "the condemned",
+  "Level": 14,
+  "RequiredKills": 6,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000015,
+  "Rank": 1,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1567,
+  "Name": "teratotaur",
+  "Level": 15,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000016,
+  "Rank": 1,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 375,
+  "Name": "kobold bedesman",
+  "Level": 16,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     230.0,
+     -471.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000017,
+  "Rank": 1,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 371,
+  "Name": "kobold priest",
+  "Level": 17,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     230.0,
+     -471.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000018,
+  "Rank": 1,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 65,
+  "Name": "sylvan sigh",
+  "Level": 18,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     146.0,
+     -17.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000019,
+  "Rank": 1,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 386,
+  "Name": "shelfscale Sahagin",
+  "Level": 44,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -109.9,
+     -118.2
+    ],
+    "Radius": 49.0,
+    "SpawnPoints": [
+     [
+      -104.9,
+      -119.9
+     ],
+     [
+      -74.9,
+      -144.9
+     ],
+     [
+      -149.9,
+      -89.9
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000020,
+  "Rank": 1,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 253,
+  "Name": "Amalj'aa pugilist",
+  "Level": 47,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     54.9,
+     -259.7
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      54.9,
+      -259.7
+     ]
+    ],
+    "Observations": 10
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000021,
+  "Rank": 2,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 103,
+  "Name": "Ixali boldwing",
+  "Level": 47,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     -10.0,
+     -45.0
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      -10.0,
+      -45.0
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000022,
+  "Rank": 2,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 67,
+  "Name": "sylpheed screech",
+  "Level": 22,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     223.0,
+     -90.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000023,
+  "Rank": 2,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1834,
+  "Name": "U'Ghamaro bedesman",
+  "Level": 23,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     73.0,
+     -543.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000024,
+  "Rank": 2,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 565,
+  "Name": "trenchtooth Sahagin",
+  "Level": 48,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -73.3,
+     -76.6
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      -69.9,
+      -89.9
+     ],
+     [
+      -79.9,
+      -69.9
+     ],
+     [
+      -69.9,
+      -69.9
+     ]
+    ],
+    "Observations": 4
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000025,
+  "Rank": 2,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1828,
+  "Name": "Sapsa shelfclaw",
+  "Level": 49,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -424.6,
+     -354.7
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      -424.6,
+      -354.7
+     ]
+    ],
+    "Observations": 4
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000026,
+  "Rank": 2,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 1838,
+  "Name": "Zahar'ak archer",
+  "Level": 48,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     229.8,
+     79.9
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      229.8,
+      84.9
+     ],
+     [
+      229.8,
+      74.9
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000027,
+  "Rank": 2,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 1845,
+  "Name": "Natalan fogcaller",
+  "Level": 49,
+  "RequiredKills": 4,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     559.5,
+     -164.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      559.5,
+      -164.8
+     ]
+    ],
+    "Observations": 2
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000028,
+  "Rank": 2,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 1843,
+  "Name": "Natalan boldwing",
+  "Level": 49,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     529.5,
+     -159.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      529.5,
+      -159.8
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000029,
+  "Rank": 2,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 35,
+  "Name": "tonberry",
+  "Level": 29,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 1,
+  "OwnerName": "Maelstrom",
+  "LogIndex": 8,
+  "MonsterNoteId": 1000030,
+  "Rank": 2,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 1549,
+  "Name": "giant bavarois",
+  "Level": 30,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000001,
+  "Rank": 0,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 247,
+  "Name": "Amalj'aa javelinier",
+  "Level": 18,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 145,
+    "AetheryteId": 18,
+    "Center": [
+     -92.4,
+     284.7
+    ],
+    "Radius": 18.2,
+    "SpawnPoints": [
+     [
+      -109.9,
+      279.7
+     ],
+     [
+      -74.9,
+      289.7
+     ]
+    ],
+    "Observations": 2
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000002,
+  "Rank": 0,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 1354,
+  "Name": "heckler imp",
+  "Level": 2,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000003,
+  "Rank": 0,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1189,
+  "Name": "scythe mantis",
+  "Level": 3,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000004,
+  "Rank": 0,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1190,
+  "Name": "Coliseum python",
+  "Level": 4,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000005,
+  "Rank": 0,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 229,
+  "Name": "sylvan scream",
+  "Level": 5,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     -230.0,
+     97.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000006,
+  "Rank": 0,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 370,
+  "Name": "kobold pickman",
+  "Level": 24,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     -427.1,
+     18.7
+    ],
+    "Radius": 52.8,
+    "SpawnPoints": [
+     [
+      -479.5,
+      25.0
+     ],
+     [
+      -389.6,
+      -5.0
+     ],
+     [
+      -434.6,
+      20.0
+     ],
+     [
+      -404.6,
+      35.0
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000007,
+  "Rank": 0,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 256,
+  "Name": "Amalj'aa bruiser",
+  "Level": 26,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     -18.7,
+     -297.2
+    ],
+    "Radius": 37.5,
+    "SpawnPoints": [
+     [
+      0.0,
+      -329.7
+     ],
+     [
+      -35.0,
+      -284.7
+     ],
+     [
+      0.0,
+      -294.7
+     ],
+     [
+      -40.0,
+      -279.7
+     ]
+    ],
+    "Observations": 9
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000008,
+  "Rank": 0,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 209,
+  "Name": "Ixali deftalon",
+  "Level": 27,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     68.3,
+     343.0
+    ],
+    "Radius": 20.1,
+    "SpawnPoints": [
+     [
+      50.0,
+      334.7
+     ],
+     [
+      69.9,
+      344.7
+     ],
+     [
+      84.9,
+      349.7
+     ]
+    ],
+    "Observations": 5
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000009,
+  "Rank": 0,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 251,
+  "Name": "Amalj'aa ranger",
+  "Level": 9,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 145,
+    "AetheryteId": 18,
+    "Center": [
+     116.0,
+     -86.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000010,
+  "Rank": 0,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 663,
+  "Name": "Ixali fearcaller",
+  "Level": 30,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     506.2,
+     309.7
+    ],
+    "Radius": 41.1,
+    "SpawnPoints": [
+     [
+      544.5,
+      294.7
+     ],
+     [
+      484.5,
+      319.7
+     ],
+     [
+      489.5,
+      314.7
+     ]
+    ],
+    "Observations": 5
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000011,
+  "Rank": 1,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 252,
+  "Name": "Amalj'aa sniper",
+  "Level": 32,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 20,
+    "Center": [
+     239.8,
+     719.3
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      239.8,
+      719.3
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000012,
+  "Rank": 1,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 373,
+  "Name": "kobold missionary",
+  "Level": 34,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 137,
+    "AetheryteId": 11,
+    "Center": [
+     323.0,
+     226.4
+    ],
+    "Radius": 26.8,
+    "SpawnPoints": [
+     [
+      334.7,
+      244.8
+     ],
+     [
+      319.7,
+      199.8
+     ],
+     [
+      314.7,
+      234.8
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000013,
+  "Rank": 1,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 376,
+  "Name": "kobold sidesman",
+  "Level": 34,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     262.2,
+     -119.9
+    ],
+    "Radius": 25.1,
+    "SpawnPoints": [
+     [
+      264.7,
+      -144.9
+     ],
+     [
+      259.7,
+      -94.9
+     ]
+    ],
+    "Observations": 4
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000014,
+  "Rank": 1,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1575,
+  "Name": "temple bee",
+  "Level": 14,
+  "RequiredKills": 4,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000015,
+  "Rank": 1,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1569,
+  "Name": "temple guardian",
+  "Level": 15,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000016,
+  "Rank": 1,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 377,
+  "Name": "kobold roundsman",
+  "Level": 16,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     230.0,
+     -471.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000017,
+  "Rank": 1,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 66,
+  "Name": "sylvan snarl",
+  "Level": 17,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     146.0,
+     -17.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000018,
+  "Rank": 1,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 384,
+  "Name": "shelfclaw Sahagin",
+  "Level": 44,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -156.5,
+     -36.6
+    ],
+    "Radius": 44.8,
+    "SpawnPoints": [
+     [
+      -179.8,
+      -74.9
+     ],
+     [
+      -129.9,
+      -5.0
+     ],
+     [
+      -159.8,
+      -30.0
+     ]
+    ],
+    "Observations": 5
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000019,
+  "Rank": 1,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 245,
+  "Name": "Amalj'aa lancer",
+  "Level": 45,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     56.6,
+     -284.7
+    ],
+    "Radius": 30.0,
+    "SpawnPoints": [
+     [
+      54.9,
+      -294.7
+     ],
+     [
+      59.9,
+      -304.7
+     ],
+     [
+      54.9,
+      -254.8
+     ]
+    ],
+    "Observations": 19
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000020,
+  "Rank": 1,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 1832,
+  "Name": "U'Ghamaro roundsman",
+  "Level": 20,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     73.0,
+     -543.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000021,
+  "Rank": 2,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 436,
+  "Name": "Ixali windtalon",
+  "Level": 21,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     34.0,
+     -14.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000022,
+  "Rank": 2,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 69,
+  "Name": "sylpheed snarl",
+  "Level": 22,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     223.0,
+     -90.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000023,
+  "Rank": 2,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1833,
+  "Name": "U'Ghamaro quarryman",
+  "Level": 23,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     73.0,
+     -543.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000024,
+  "Rank": 2,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1830,
+  "Name": "Sapsa shelftooth",
+  "Level": 49,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -364.6,
+     -372.1
+    ],
+    "Radius": 29.2,
+    "SpawnPoints": [
+     [
+      -374.6,
+      -344.7
+     ],
+     [
+      -354.7,
+      -399.6
+     ]
+    ],
+    "Observations": 5
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000025,
+  "Rank": 2,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1839,
+  "Name": "Zahar'ak pugilist",
+  "Level": 48,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 20,
+    "Center": [
+     209.8,
+     104.9
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      209.8,
+      104.9
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000026,
+  "Rank": 2,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 1844,
+  "Name": "Natalan swiftbeak",
+  "Level": 49,
+  "RequiredKills": 4,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     494.5,
+     -199.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      494.5,
+      -199.8
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000027,
+  "Rank": 2,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 1843,
+  "Name": "Natalan boldwing",
+  "Level": 49,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     529.5,
+     -159.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      529.5,
+      -159.8
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000028,
+  "Rank": 2,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 35,
+  "Name": "tonberry",
+  "Level": 28,
+  "RequiredKills": 7,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000029,
+  "Rank": 2,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 1559,
+  "Name": "bronze beetle",
+  "Level": 29,
+  "RequiredKills": 6,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 2,
+  "OwnerName": "Order of the Twin Adder",
+  "LogIndex": 9,
+  "MonsterNoteId": 2000030,
+  "Rank": 2,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 1548,
+  "Name": "Keeper of Halidom",
+  "Level": 30,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000001,
+  "Rank": 0,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 250,
+  "Name": "Amalj'aa hunter",
+  "Level": 18,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 145,
+    "AetheryteId": 18,
+    "Center": [
+     -97.4,
+     294.7
+    ],
+    "Radius": 27.9,
+    "SpawnPoints": [
+     [
+      -69.9,
+      289.7
+     ],
+     [
+      -124.9,
+      299.7
+     ]
+    ],
+    "Observations": 3
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000002,
+  "Rank": 0,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 1188,
+  "Name": "doctore",
+  "Level": 2,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000003,
+  "Rank": 0,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1194,
+  "Name": "Firemane",
+  "Level": 3,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000004,
+  "Rank": 0,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1196,
+  "Name": "thunderclap guivre",
+  "Level": 4,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Eastern Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000005,
+  "Rank": 0,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 230,
+  "Name": "sylvan sough",
+  "Level": 5,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     -230.0,
+     97.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000006,
+  "Rank": 0,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 380,
+  "Name": "kobold footman",
+  "Level": 24,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     -469.5,
+     35.0
+    ],
+    "Radius": 36.0,
+    "SpawnPoints": [
+     [
+      -484.5,
+      20.0
+     ],
+     [
+      -484.5,
+      30.0
+     ],
+     [
+      -439.6,
+      54.9
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000007,
+  "Rank": 0,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 370,
+  "Name": "kobold pickman",
+  "Level": 24,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     -427.1,
+     18.7
+    ],
+    "Radius": 52.8,
+    "SpawnPoints": [
+     [
+      -479.5,
+      25.0
+     ],
+     [
+      -389.6,
+      -5.0
+     ],
+     [
+      -434.6,
+      20.0
+     ],
+     [
+      -404.6,
+      35.0
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000008,
+  "Rank": 0,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 259,
+  "Name": "Amalj'aa seer",
+  "Level": 26,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     -18.0,
+     -318.7
+    ],
+    "Radius": 31.7,
+    "SpawnPoints": [
+     [
+      -20.0,
+      -344.7
+     ],
+     [
+      -5.0,
+      -289.7
+     ],
+     [
+      -25.0,
+      -309.7
+     ],
+     [
+      -10.0,
+      -344.7
+     ],
+     [
+      -30.0,
+      -304.7
+     ]
+    ],
+    "Observations": 8
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000009,
+  "Rank": 0,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 208,
+  "Name": "Ixali lightwing",
+  "Level": 27,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     72.4,
+     344.7
+    ],
+    "Radius": 20.1,
+    "SpawnPoints": [
+     [
+      54.9,
+      334.7
+     ],
+     [
+      89.9,
+      354.7
+     ]
+    ],
+    "Observations": 4
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000010,
+  "Rank": 0,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 662,
+  "Name": "Ixali boundwing",
+  "Level": 30,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     549.5,
+     309.7
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      549.5,
+      309.7
+     ]
+    ],
+    "Observations": 3
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000011,
+  "Rank": 1,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 2155,
+  "Name": "Amalj'aa halberdier",
+  "Level": 32,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 20,
+    "Center": [
+     329.7,
+     664.4
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      329.7,
+      664.4
+     ]
+    ],
+    "Observations": 2
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000012,
+  "Rank": 1,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 373,
+  "Name": "kobold missionary",
+  "Level": 34,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Eastern La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 137,
+    "AetheryteId": 11,
+    "Center": [
+     323.0,
+     226.4
+    ],
+    "Radius": 26.8,
+    "SpawnPoints": [
+     [
+      334.7,
+      244.8
+     ],
+     [
+      319.7,
+      199.8
+     ],
+     [
+      314.7,
+      234.8
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000013,
+  "Rank": 1,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 376,
+  "Name": "kobold sidesman",
+  "Level": 34,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 139,
+    "AetheryteId": 15,
+    "Center": [
+     262.2,
+     -119.9
+    ],
+    "Radius": 25.1,
+    "SpawnPoints": [
+     [
+      264.7,
+      -144.9
+     ],
+     [
+      259.7,
+      -94.9
+     ]
+    ],
+    "Observations": 4
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000014,
+  "Rank": 1,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1592,
+  "Name": "sand bat",
+  "Level": 14,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Central Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000015,
+  "Rank": 1,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1594,
+  "Name": "sabotender desertor",
+  "Level": 15,
+  "RequiredKills": 2,
+  "ZoneNames": [
+   "Central Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000016,
+  "Rank": 1,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 1585,
+  "Name": "myrmidon princess",
+  "Level": 16,
+  "RequiredKills": 1,
+  "ZoneNames": [
+   "Central Thanalan"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000017,
+  "Rank": 1,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 562,
+  "Name": "kobold quarryman",
+  "Level": 17,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     230.0,
+     -471.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000018,
+  "Rank": 1,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 64,
+  "Name": "sylvan screech",
+  "Level": 18,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     146.0,
+     -17.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000019,
+  "Rank": 1,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 389,
+  "Name": "shelfspine Sahagin",
+  "Level": 44,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -96.2,
+     -123.6
+    ],
+    "Radius": 46.2,
+    "SpawnPoints": [
+     [
+      -139.9,
+      -114.9
+     ],
+     [
+      -50.0,
+      -124.9
+     ],
+     [
+      -89.9,
+      -124.9
+     ],
+     [
+      -104.9,
+      -129.9
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000020,
+  "Rank": 1,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 249,
+  "Name": "Amalj'aa archer",
+  "Level": 47,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 20,
+    "Center": [
+     -40.0,
+     354.7
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      -40.0,
+      354.7
+     ]
+    ],
+    "Observations": 7
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000021,
+  "Rank": 2,
+  "Entry": 0,
+  "Slot": 0,
+  "BNpcNameId": 436,
+  "Name": "Ixali windtalon",
+  "Level": 21,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "North Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 154,
+    "AetheryteId": 7,
+    "Center": [
+     34.0,
+     -14.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000022,
+  "Rank": 2,
+  "Entry": 1,
+  "Slot": 0,
+  "BNpcNameId": 68,
+  "Name": "sylpheed sigh",
+  "Level": 22,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "East Shroud"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 152,
+    "AetheryteId": 4,
+    "Center": [
+     223.0,
+     -90.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000023,
+  "Rank": 2,
+  "Entry": 2,
+  "Slot": 0,
+  "BNpcNameId": 1835,
+  "Name": "U'Ghamaro priest",
+  "Level": 23,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Outer La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": true,
+  "Areas": [
+   {
+    "TerritoryId": 180,
+    "AetheryteId": 16,
+    "Center": [
+     73.0,
+     -543.0
+    ],
+    "Radius": 70.0,
+    "SpawnPoints": [],
+    "Observations": 0
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000024,
+  "Rank": 2,
+  "Entry": 3,
+  "Slot": 0,
+  "BNpcNameId": 1829,
+  "Name": "Sapsa shelfspine",
+  "Level": 49,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Western La Noscea"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 138,
+    "AetheryteId": 14,
+    "Center": [
+     -412.1,
+     -354.7
+    ],
+    "Radius": 19.5,
+    "SpawnPoints": [
+     [
+      -424.6,
+      -369.6
+     ],
+     [
+      -399.6,
+      -339.7
+     ]
+    ],
+    "Observations": 3
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000025,
+  "Rank": 2,
+  "Entry": 4,
+  "Slot": 0,
+  "BNpcNameId": 1840,
+  "Name": "Zahar'ak thaumaturge",
+  "Level": 49,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Southern Thanalan"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 146,
+    "AetheryteId": 19,
+    "Center": [
+     104.9,
+     20.0
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      104.9,
+      20.0
+     ]
+    ],
+    "Observations": 6
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000026,
+  "Rank": 2,
+  "Entry": 5,
+  "Slot": 0,
+  "BNpcNameId": 1842,
+  "Name": "Natalan windtalon",
+  "Level": 49,
+  "RequiredKills": 4,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     519.5,
+     -199.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      529.5,
+      -194.8
+     ],
+     [
+      509.5,
+      -204.8
+     ]
+    ],
+    "Observations": 2
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000027,
+  "Rank": 2,
+  "Entry": 6,
+  "Slot": 0,
+  "BNpcNameId": 1843,
+  "Name": "Natalan boldwing",
+  "Level": 49,
+  "RequiredKills": 5,
+  "ZoneNames": [
+   "Coerthas Central Highlands"
+  ],
+  "InDuty": false,
+  "Approximate": false,
+  "Areas": [
+   {
+    "TerritoryId": 155,
+    "AetheryteId": 23,
+    "Center": [
+     529.5,
+     -159.8
+    ],
+    "Radius": 15.0,
+    "SpawnPoints": [
+     [
+      529.5,
+      -159.8
+     ]
+    ],
+    "Observations": 1
+   }
+  ]
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000028,
+  "Rank": 2,
+  "Entry": 7,
+  "Slot": 0,
+  "BNpcNameId": 35,
+  "Name": "tonberry",
+  "Level": 28,
+  "RequiredKills": 8,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000029,
+  "Rank": 2,
+  "Entry": 8,
+  "Slot": 0,
+  "BNpcNameId": 1557,
+  "Name": "corrupted Nymian",
+  "Level": 29,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ },
+ {
+  "Kind": "GrandCompany",
+  "Owner": 3,
+  "OwnerName": "Immortal Flames",
+  "LogIndex": 10,
+  "MonsterNoteId": 3000030,
+  "Rank": 2,
+  "Entry": 9,
+  "Slot": 0,
+  "BNpcNameId": 1565,
+  "Name": "soldier of Nym",
+  "Level": 30,
+  "RequiredKills": 3,
+  "ZoneNames": [
+   "Upper La Noscea"
+  ],
+  "InDuty": true,
+  "Approximate": false,
+  "Areas": []
+ }
+]
