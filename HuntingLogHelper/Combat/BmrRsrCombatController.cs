@@ -10,24 +10,20 @@ namespace HuntingLogHelper.Combat;
 /// </summary>
 public sealed class BmrRsrCombatController : ICombatController
 {
-    private bool engaged;
-
     public bool InCombat => Plugin.Condition[ConditionFlag.InCombat];
 
     public void Engage(IBattleNpc mob)
     {
         Plugin.TargetManager.Target = mob;
-        if (engaged) return;
+        // Always (re)send: RSR switches itself off on zone change and other events,
+        // so we can't trust that an earlier "on" is still in effect.
         Plugin.CommandManager.ProcessCommand("/rotation auto");
         Plugin.CommandManager.ProcessCommand("/bmrai on");
-        engaged = true;
     }
 
     public void Disengage()
     {
-        if (!engaged) return;
         Plugin.CommandManager.ProcessCommand("/rotation off");
         Plugin.CommandManager.ProcessCommand("/bmrai off");
-        engaged = false;
     }
 }
