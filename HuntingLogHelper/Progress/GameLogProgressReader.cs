@@ -15,7 +15,7 @@ public sealed unsafe class GameLogProgressReader : ILogProgressReader
     {
         var row = Plugin.DataManager.GetExcelSheet<ClassJob>().GetRowOrDefault(classJobId);
         if (row == null) return -1;
-        int idx = row.Value.MonsterNote;
+        var idx = (int)row.Value.MonsterNote.RowId;
         return idx is >= 0 and < 12 ? idx : -1;
     }
 
