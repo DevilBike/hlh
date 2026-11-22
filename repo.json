@@ -3,7 +3,7 @@
     "Author": "Bike",
     "Name": "Hunting Log Helper",
     "InternalName": "HuntingLogHelper",
-    "AssemblyVersion": "0.2.5.0",
+    "AssemblyVersion": "0.2.6.0",
     "Punchline": "Works through your class hunting log for you.",
     "Description": "Travels to hunting log targets, lets BossMod Reborn and Rotation Solver Reborn fight, verifies completion, and moves on.",
     "ApplicableVersion": "any",
