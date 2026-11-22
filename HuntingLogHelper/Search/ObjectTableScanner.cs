@@ -9,7 +9,7 @@ public sealed class ObjectTableScanner : ITargetScanner
 {
     public IBattleNpc? FindNearest(HuntTarget target)
     {
-        var me = Plugin.ClientState.LocalPlayer;
+        var me = Plugin.ObjectTable.LocalPlayer;
         if (me == null) return null;
 
         return Plugin.ObjectTable
