@@ -201,6 +201,7 @@ public sealed class HuntEngine
             lastApproachPath = DateTime.MinValue;
             approachBest = float.MaxValue;
             approachProgressAt = DateTime.UtcNow;
+            dismountStarted = DateTime.MinValue;
             Go(HuntState.Approaching, $"Found {t.Name}");
             WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
@@ -245,7 +246,7 @@ public sealed class HuntEngine
     private DateTime approachProgressAt = DateTime.UtcNow;
     private DateTime lastApproachPath = DateTime.MinValue;
     private readonly Dictionary<ulong, DateTime> ignored = new();
-    private DateTime lastDismountTry = DateTime.MinValue;
+    private DateTime dismountStarted = DateTime.MinValue;
 
     private void Approach(Vector3 pos)
     {
@@ -261,15 +262,17 @@ public sealed class HuntEngine
         // so keep pressing about once a second until the game says we're on foot.
         if (travel.IsMounted && (dist <= DismountRange || combat.InCombat))
         {
-            if (travel.IsBusy) travel.Stop();
-            if (DateTime.UtcNow - lastDismountTry > TimeSpan.FromSeconds(1))
-            {
-                travel.Dismount();
-                lastDismountTry = DateTime.UtcNow;
-            }
+            if (dismountStarted == DateTime.MinValue) dismountStarted = DateTime.UtcNow;
             StatusText = $"Dismounting near {mob.Name}";
-            if (DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(10)) Go(HuntState.Searching, "Could not dismount, searching");
-            return;
+            if (!travel.TryDismount(mob.Position))
+            {
+                if (DateTime.UtcNow - dismountStarted > TimeSpan.FromSeconds(20))
+                {
+                    ignored[mob.GameObjectId] = DateTime.UtcNow.AddSeconds(60);
+                    Go(HuntState.Searching, "Could not dismount here, searching");
+                }
+                return;
+            }
         }
 
         if (combat.InCombat)

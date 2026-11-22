@@ -116,16 +116,77 @@ public sealed unsafe class IpcTravelService : ITravelService
         if (Mounted) UseGeneralAction(DismountAction);
     }
 
+    private readonly Random rng = new();
+    private DateTime lastDismountPress = DateTime.MinValue;
+    private int failedPresses;
+    private Vector3? landingSpot;
+
+    public bool TryDismount(Vector3 toward)
+    {
+        if (!Mounted)
+        {
+            failedPresses = 0;
+            landingSpot = null;
+            return true;
+        }
+        var me = Plugin.ObjectTable.LocalPlayer;
+        if (me == null) return false;
+
+        // Still flying to the landing spot we picked.
+        if (landingSpot is { } spot)
+        {
+            if (Vector2.Distance(new(me.Position.X, me.Position.Z), new(spot.X, spot.Z)) > 1.5f)
+            {
+                if (!IsBusy) StartPath(spot, fly: true);
+                return false;
+            }
+            Stop();
+            landingSpot = null;
+        }
+
+        if (DateTime.UtcNow - lastDismountPress < TimeSpan.FromSeconds(1)) return false;
+
+        // Check the ground below before pressing: find landable floor near us.
+        var floor = Try(() => pointOnFloor.InvokeFunc(me.Position, false, 4f), null);
+        var airborne = Plugin.Condition[ConditionFlag.InFlight] || Plugin.Condition[ConditionFlag.Diving];
+        if (airborne && floor is { } f && me.Position.Y - f.Y > 1.5f && failedPresses == 0)
+        {
+            landingSpot = f;            // descend onto checked ground, then dismount
+            StartPath(f, fly: true);
+            return false;
+        }
+
+        if (failedPresses >= 3)
+        {
+            // Dismount keeps failing (bad ground, slope, water): move a few yalms toward the mob and retry.
+            var dir = Vector3.Normalize(new Vector3(toward.X - me.Position.X, 0, toward.Z - me.Position.Z));
+            if (float.IsNaN(dir.X)) dir = new Vector3(1, 0, 0);
+            var angle = (float)((rng.NextDouble() - 0.5) * Math.PI / 2);
+            var rot = new Vector3(dir.X * MathF.Cos(angle) - dir.Z * MathF.Sin(angle), 0, dir.X * MathF.Sin(angle) + dir.Z * MathF.Cos(angle));
+            var candidate = me.Position + rot * (5f + (float)rng.NextDouble() * 5f);
+            var ground = Try(() => pointOnFloor.InvokeFunc(candidate with { Y = me.Position.Y + 20f }, false, 5f), null);
+            landingSpot = ground ?? candidate;
+            failedPresses = 0;
+            StartPath(landingSpot.Value, fly: airborne);
+            return false;
+        }
+
+        UseGeneralAction(DismountAction);
+        lastDismountPress = DateTime.UtcNow;
+        failedPresses++;
+        return false;
+    }
+
     public void Stop()
     {
         pendingDestination = null;
         Try(() => { pathStop.InvokeAction(); return true; }, false);
     }
 
-    private void StartPath(Vector3 target)
+    private void StartPath(Vector3 target, bool? fly = null)
     {
-        var fly = config.UseFlying && Mounted && CanFlyHere();
-        Try(() => pathfindAndMoveTo.InvokeFunc(target, fly), false);
+        var useFly = fly ?? (config.UseFlying && Mounted && CanFlyHere());
+        Try(() => pathfindAndMoveTo.InvokeFunc(target, useFly), false);
     }
 
     private static bool Mounted => Plugin.Condition[ConditionFlag.Mounted];

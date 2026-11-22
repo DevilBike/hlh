@@ -40,6 +40,11 @@ public interface ITravelService
     /// <param name="exactHeight">True when destination.Y is real (e.g. a mob's position); false for map X/Z waypoints.</param>
     void MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false);
     void Dismount();
+    /// <summary>
+    /// Safe dismount: lands on checked, landable ground first, and moves to a nearby spot if the
+    /// dismount keeps failing. Call every tick; returns true once on foot.
+    /// </summary>
+    bool TryDismount(Vector3 toward);
     void Stop();
     /// <summary>Per-frame housekeeping (e.g. finish a mount-then-move).</summary>
     void Update();
