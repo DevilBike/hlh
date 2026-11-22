@@ -239,6 +239,7 @@ public sealed class HuntEngine
 
     private const float DismountRange = 20f;
     private bool pullRetried;
+    private DateTime lastPull = DateTime.MinValue;
     private Vector3? searchDest;
     private float pauseAtDest;
     private Vector3 approachDest;
@@ -315,10 +316,25 @@ public sealed class HuntEngine
 
     private void Fight()
     {
-        if (!combat.InCombat && mob != null && !mob.IsDead && !pullRetried && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(3))
+        if (!combat.InCombat && mob != null && !mob.IsDead)
         {
-            pullRetried = true;
-            combat.Pull(mob); // retry the pull once if it did not land
+            var waited = DateTime.UtcNow - stateSince;
+            if (waited > TimeSpan.FromSeconds(8))
+            {
+                // This mob won't engage (out of range, line of sight, tagged...). Try another one.
+                ignored[mob.GameObjectId] = DateTime.UtcNow.AddSeconds(60);
+                combat.StandDown();
+                mob = null;
+                Go(HuntState.Searching, "Pull failed, looking for another");
+                return;
+            }
+            if (DateTime.UtcNow - lastPull > TimeSpan.FromSeconds(1.5))
+            {
+                if (Vector3.Distance(Plugin.ObjectTable.LocalPlayer!.Position, mob.Position) - mob.HitboxRadius > EngageRange + 1f)
+                    travel.MoveTo(mob.Position, allowMount: false, exactHeight: true);
+                combat.Pull(mob);
+                lastPull = DateTime.UtcNow;
+            }
             return;
         }
         if (combat.InCombat)
