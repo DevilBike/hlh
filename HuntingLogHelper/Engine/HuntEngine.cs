@@ -200,11 +200,31 @@ public sealed class HuntEngine
         if (next.PauseSeconds > 0) waitUntil = DateTime.UtcNow.AddSeconds(next.PauseSeconds);
     }
 
+    private const float DismountRange = 20f;
+    private DateTime lastDismountTry = DateTime.MinValue;
+
     private void Approach(Vector3 pos)
     {
         if (mob == null || mob.IsDead || !mob.IsValid())
         {
             Go(HuntState.Searching, $"Lost {Current!.Target.Name}, searching");
+            return;
+        }
+
+        var dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
+
+        // Get off the mount before fighting. Flying needs two presses (land, then dismount),
+        // so keep pressing about once a second until the game says we're on foot.
+        if (travel.IsMounted && (dist <= DismountRange || combat.InCombat))
+        {
+            if (travel.IsBusy) travel.Stop();
+            if (DateTime.UtcNow - lastDismountTry > TimeSpan.FromSeconds(1))
+            {
+                travel.Dismount();
+                lastDismountTry = DateTime.UtcNow;
+            }
+            StatusText = $"Dismounting near {mob.Name}";
+            if (DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(10)) Go(HuntState.Searching, "Could not dismount, searching");
             return;
         }
 
@@ -215,7 +235,6 @@ public sealed class HuntEngine
             return;
         }
 
-        var dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
         if (dist > EngageRange)
         {
             if (!travel.IsBusy) travel.MoveTo(mob.Position, allowMount: dist > 60f);
@@ -224,7 +243,6 @@ public sealed class HuntEngine
         }
 
         travel.Stop();
-        travel.Dismount();
         combat.Engage(mob);
         Go(HuntState.Fighting, $"Fighting {mob.Name}");
     }

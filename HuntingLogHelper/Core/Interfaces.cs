@@ -32,6 +32,8 @@ public interface ITravelService
     /// <summary>True while teleporting, zoning, mounting or following a path.</summary>
     bool IsBusy { get; }
     bool IsReady { get; }
+    /// <summary>True while on a mount (flying or not).</summary>
+    bool IsMounted { get; }
     bool IsInZone(uint territoryId);
     void TravelToZone(HuntArea area);
     /// <summary>Path to a point. Mounts/flies for long trips when the config allows it.</summary>
