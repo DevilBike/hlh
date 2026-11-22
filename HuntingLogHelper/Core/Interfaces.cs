@@ -32,13 +32,18 @@ public interface ITravelService
     /// <summary>True while teleporting, zoning, mounting or following a path.</summary>
     bool IsBusy { get; }
     bool IsReady { get; }
+    /// <summary>True while the navmesh is still computing a path (the character may stand still meanwhile).</summary>
+    bool IsComputingPath { get; }
+    /// <summary>Hop once, a small human-looking unstick attempt.</summary>
+    void Jump();
     /// <summary>True while on a mount (flying or not).</summary>
     bool IsMounted { get; }
     bool IsInZone(uint territoryId);
     void TravelToZone(HuntArea area);
     /// <summary>Path to a point. Mounts/flies for long trips when the config allows it.</summary>
     /// <param name="exactHeight">True when destination.Y is real (e.g. a mob's position); false for map X/Z waypoints.</param>
-    void MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false);
+    /// <returns>False if the point isn't on walkable navmesh (caller should pick another).</returns>
+    bool MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false);
     void Dismount();
     /// <summary>
     /// Safe dismount: lands on checked, landable ground first, and moves to a nearby spot if the
