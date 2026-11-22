@@ -127,8 +127,11 @@ public sealed class HuntEngine
 
         Current = queue[0];
         var t = Current.Target;
-        // Prefer an area in the zone we are already in, else the best-observed one.
-        area = t.Areas.FirstOrDefault(a => travel.IsInZone(a.TerritoryId)) ?? t.Areas[0];
+        // Prefer the zone we are in, then zones whose aetheryte is attuned, then the best-observed one.
+        var attuned = Plugin.AetheryteList.Select(a => a.AetheryteId).ToHashSet();
+        area = t.Areas.FirstOrDefault(a => travel.IsInZone(a.TerritoryId))
+               ?? t.Areas.FirstOrDefault(a => attuned.Contains(a.AetheryteId))
+               ?? t.Areas[0];
         searchRounds = 0;
         travelAttempts = 0;
         waypoints.Clear();
