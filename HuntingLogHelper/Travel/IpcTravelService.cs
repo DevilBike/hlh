@@ -87,6 +87,7 @@ public sealed unsafe class IpcTravelService : ITravelService
             ? Try(() => nearestPoint.InvokeFunc(destination, 3f, 5f), null)
             : Try(() => pointOnFloor.InvokeFunc(destination with { Y = me.Position.Y + 50f }, false, 8f), null)
               ?? Try(() => nearestPoint.InvokeFunc(destination with { Y = me.Position.Y }, 12f, 60f), null);
+        DebugLog.Write($"MOVETO want {DebugLog.V(destination)} snapped {DebugLog.V(snapped)} exactHeight={exactHeight} from {DebugLog.V(me.Position)} mounted={Mounted}");
         if (snapped == null && !exactHeight) return false; // not walkable (rock, water, cliff): skip it
         var target = snapped ?? destination;
 
@@ -127,60 +128,82 @@ public sealed unsafe class IpcTravelService : ITravelService
     private DateTime lastDismountPress = DateTime.MinValue;
     private int failedPresses;
     private Vector3? landingSpot;
+    private float lastAltitude = float.MaxValue;
+    private DateTime lastDescent = DateTime.UtcNow;
 
     public bool TryDismount(Vector3 toward)
     {
         if (!Mounted)
         {
+            if (failedPresses > 0 || landingSpot != null) DebugLog.Write("DISMOUNT done");
             failedPresses = 0;
             landingSpot = null;
+            lastAltitude = float.MaxValue;
             return true;
         }
         var me = Plugin.ObjectTable.LocalPlayer;
         if (me == null) return false;
+        var airborne = Plugin.Condition[ConditionFlag.InFlight] || Plugin.Condition[ConditionFlag.Diving];
 
-        // Still flying to the landing spot we picked.
+        // Flying to a landing spot we picked.
         if (landingSpot is { } spot)
         {
-            if (Vector2.Distance(new(me.Position.X, me.Position.Z), new(spot.X, spot.Z)) > 1.5f)
+            if (Vector2.Distance(new(me.Position.X, me.Position.Z), new(spot.X, spot.Z)) > 2f)
             {
-                if (!IsBusy) StartPath(spot, fly: true);
+                if (!IsBusy) StartPath(spot with { Y = spot.Y + 2f }, fly: airborne);
                 return false;
             }
             Stop();
             landingSpot = null;
+            lastAltitude = float.MaxValue;
+            lastDescent = DateTime.UtcNow;
         }
 
-        if (DateTime.UtcNow - lastDismountPress < TimeSpan.FromSeconds(1)) return false;
-
-        // Check the ground below before pressing: find landable floor near us.
-        var floor = Try(() => pointOnFloor.InvokeFunc(me.Position, false, 4f), null);
-        var airborne = Plugin.Condition[ConditionFlag.InFlight] || Plugin.Condition[ConditionFlag.Diving];
-        if (airborne && floor is { } f && me.Position.Y - f.Y > 1.5f && failedPresses == 0)
+        if (airborne)
         {
-            landingSpot = f;            // descend onto checked ground, then dismount
-            StartPath(f, fly: true);
-            return false;
+            // Pressing Dismount in the air makes the mount descend and land. The descent takes a few
+            // seconds and is NOT a failure; only count a failure if we stop getting lower.
+            if (me.Position.Y < lastAltitude - 0.3f) { lastAltitude = me.Position.Y; lastDescent = DateTime.UtcNow; }
+            if (DateTime.UtcNow - lastDismountPress > TimeSpan.FromSeconds(2))
+            {
+                var floor = Try(() => pointOnFloor.InvokeFunc(me.Position, false, 5f), null);
+                DebugLog.Write($"DISMOUNT airborne at {DebugLog.V(me.Position)} floorBelow {DebugLog.V(floor)} failed={failedPresses}");
+                UseGeneralAction(DismountAction);
+                lastDismountPress = DateTime.UtcNow;
+            }
+            if (DateTime.UtcNow - lastDescent > TimeSpan.FromSeconds(4))
+            {
+                failedPresses++;
+                lastDescent = DateTime.UtcNow;
+                DebugLog.Write($"DISMOUNT not descending (alt {me.Position.Y:F1}), failure {failedPresses}");
+            }
+        }
+        else if (DateTime.UtcNow - lastDismountPress > TimeSpan.FromSeconds(1.2))
+        {
+            // On the ground and still mounted: each press that doesn't work is a real failure.
+            if (lastDismountPress != DateTime.MinValue && DateTime.UtcNow - lastDismountPress < TimeSpan.FromSeconds(3)) failedPresses++;
+            DebugLog.Write($"DISMOUNT grounded at {DebugLog.V(me.Position)} failed={failedPresses}");
+            UseGeneralAction(DismountAction);
+            lastDismountPress = DateTime.UtcNow;
         }
 
         if (failedPresses >= 3)
         {
-            // Dismount keeps failing (bad ground, slope, water): move a few yalms toward the mob and retry.
-            var dir = Vector3.Normalize(new Vector3(toward.X - me.Position.X, 0, toward.Z - me.Position.Z));
-            if (float.IsNaN(dir.X)) dir = new Vector3(1, 0, 0);
+            // Can't land/dismount here: move to checked, landable ground a few yalms toward the mob.
+            var dir = new Vector3(toward.X - me.Position.X, 0, toward.Z - me.Position.Z);
+            dir = dir.LengthSquared() < 0.01f ? new Vector3(1, 0, 0) : Vector3.Normalize(dir);
             var angle = (float)((rng.NextDouble() - 0.5) * Math.PI / 2);
             var rot = new Vector3(dir.X * MathF.Cos(angle) - dir.Z * MathF.Sin(angle), 0, dir.X * MathF.Sin(angle) + dir.Z * MathF.Cos(angle));
-            var candidate = me.Position + rot * (5f + (float)rng.NextDouble() * 5f);
-            var ground = Try(() => pointOnFloor.InvokeFunc(candidate with { Y = me.Position.Y + 20f }, false, 5f), null);
-            landingSpot = ground ?? candidate;
+            var candidate = me.Position + rot * (6f + (float)rng.NextDouble() * 6f);
+            var ground = Try(() => pointOnFloor.InvokeFunc(candidate with { Y = me.Position.Y + 5f }, false, 6f), null);
+            DebugLog.Write($"DISMOUNT relocating: candidate {DebugLog.V(candidate)} ground {DebugLog.V(ground)}");
+            if (ground != null)
+            {
+                landingSpot = ground;
+                StartPath(ground.Value with { Y = ground.Value.Y + 2f }, fly: airborne);
+            }
             failedPresses = 0;
-            StartPath(landingSpot.Value, fly: airborne);
-            return false;
         }
-
-        UseGeneralAction(DismountAction);
-        lastDismountPress = DateTime.UtcNow;
-        failedPresses++;
         return false;
     }
 
@@ -193,7 +216,8 @@ public sealed unsafe class IpcTravelService : ITravelService
     private void StartPath(Vector3 target, bool? fly = null)
     {
         var useFly = fly ?? (config.UseFlying && Mounted && CanFlyHere());
-        Try(() => pathfindAndMoveTo.InvokeFunc(target, useFly), false);
+        var ok = Try(() => pathfindAndMoveTo.InvokeFunc(target, useFly), false);
+        DebugLog.Write($"PATH to {DebugLog.V(target)} fly={useFly} accepted={ok}");
     }
 
     private static bool Mounted => Plugin.Condition[ConditionFlag.Mounted];

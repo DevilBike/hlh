@@ -17,5 +17,8 @@ public class Configuration : IPluginConfiguration
     /// <summary>Grand Company log mode. Disabled until the class log is verified in-game.</summary>
     public bool EnableGrandCompanyLog { get; set; } = false;
 
+    /// <summary>Write hlh-debug.log with movement, dismount and combat decisions.</summary>
+    public bool DebugLogging { get; set; } = true;
+
     public void Save() => Plugin.PluginInterface.SavePluginConfig(this);
 }

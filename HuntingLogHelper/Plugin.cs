@@ -40,6 +40,8 @@ public sealed class Plugin : IDalamudPlugin
     public Plugin()
     {
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        DebugLog.Init(PluginInterface.GetPluginConfigDirectory());
+        DebugLog.Enabled = Configuration.DebugLogging;
 
         // Composition root: the only place that knows which implementation backs each module.
         Targets = new JsonTargetDatabase();
@@ -74,6 +76,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         Framework.Update -= OnFrameworkUpdate;
         Engine.Stop();
+        DebugLog.Flush(force: true);
         PluginInterface.UiBuilder.Draw -= WindowSystem.Draw;
         PluginInterface.UiBuilder.OpenMainUi -= ToggleMainUi;
         PluginInterface.UiBuilder.OpenConfigUi -= ToggleMainUi;
@@ -82,7 +85,11 @@ public sealed class Plugin : IDalamudPlugin
         CommandManager.RemoveHandler(CommandName);
     }
 
-    private void OnFrameworkUpdate(IFramework _) => Engine.Tick();
+    private void OnFrameworkUpdate(IFramework _)
+    {
+        Engine.Tick();
+        DebugLog.Flush();
+    }
 
     private void OnCommand(string command, string args)
     {
