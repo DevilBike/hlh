@@ -1,24 +1,34 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using HuntingLogHelper.Core;
 
 namespace HuntingLogHelper.Combat;
 
 /// <summary>
-/// Targets the mob and hands the fight to Rotation Solver Reborn (rotation) and
-/// BossMod Reborn's AI (positioning, dodging), using their chat commands.
+/// Targets the mob, starts the pull with auto-attack (RSR won't open on passive mobs),
+/// and hands the fight to Rotation Solver Reborn and BossMod Reborn's AI.
 /// </summary>
-public sealed class BmrRsrCombatController : ICombatController
+public sealed unsafe class BmrRsrCombatController : ICombatController
 {
+    private const uint AutoAttack = 1; // GeneralAction: Auto-attack
+
     public bool InCombat => Plugin.Condition[ConditionFlag.InCombat];
 
     public void Engage(IBattleNpc mob)
     {
         Plugin.TargetManager.Target = mob;
-        // Always (re)send: RSR switches itself off on zone change and other events,
-        // so we can't trust that an earlier "on" is still in effect.
+        // RSR switches itself off on zone change, so (re)send once per engage, never per frame.
         Plugin.CommandManager.ProcessCommand("/rotation auto");
         Plugin.CommandManager.ProcessCommand("/bmrai on");
+        Pull(mob);
+    }
+
+    public void Pull(IBattleNpc mob)
+    {
+        if (InCombat) return;
+        var am = ActionManager.Instance();
+        if (am != null) am->UseAction(ActionType.GeneralAction, AutoAttack, mob.GameObjectId);
     }
 
     public void Disengage()

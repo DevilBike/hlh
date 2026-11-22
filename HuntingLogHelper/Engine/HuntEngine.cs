@@ -37,6 +37,7 @@ public sealed class HuntEngine
     private Queue<Waypoint> waypoints = new();
     private IBattleNpc? mob;
     private int searchRounds;
+    private bool retriedSkipped;
     private int travelAttempts;
     private DateTime stateSince = DateTime.UtcNow;
     private DateTime waitUntil = DateTime.MinValue;
@@ -70,7 +71,8 @@ public sealed class HuntEngine
             .Where(t => t.Level <= level + config.MaxLevelsAbove)
             .Select(t => new QueuedTarget(t, progress.KillsRemaining(t)))
             .Where(q => q.KillsRemaining > 0)
-            .OrderBy(q => Math.Abs(q.Target.Level - level))
+            .OrderBy(q => q.Target.Level)
+            .ThenBy(q => q.Target.Areas.Any(a => travel.IsInZone(a.TerritoryId)) ? 0 : 1)
             .ThenBy(q => q.Target.Entry)
             .ToList();
     }
@@ -78,6 +80,7 @@ public sealed class HuntEngine
     public void Start()
     {
         skipped.Clear();
+        retriedSkipped = false;
         stuckCount = 0;
         Go(HuntState.Choosing, "Starting");
     }
@@ -90,10 +93,20 @@ public sealed class HuntEngine
         Go(HuntState.Stopped, reason);
     }
 
-    /// <summary>Called every framework tick.</summary>
+    /// <summary>Called every framework tick. Errors are shown in the status instead of freezing the loop silently.</summary>
     public void Tick()
     {
         if (!Running) return;
+        try { TickInner(); }
+        catch (Exception ex)
+        {
+            Plugin.Log.Error(ex, "[HLH] Tick failed");
+            StatusText = $"Error in {State}: {ex.Message}";
+        }
+    }
+
+    private void TickInner()
+    {
         travel.Update();
 
         var me = Plugin.ObjectTable.LocalPlayer;
@@ -116,6 +129,12 @@ public sealed class HuntEngine
     private void Choose(Vector3 pos)
     {
         var queue = BuildQueue();
+        if (queue.Count == 0 && skipped.Count > 0 && !retriedSkipped)
+        {
+            retriedSkipped = true;
+            skipped.Clear();
+            queue = BuildQueue();
+        }
         if (queue.Count == 0)
         {
             combat.Disengage();
@@ -171,18 +190,32 @@ public sealed class HuntEngine
     {
         var t = Current!.Target;
         var found = scanner.FindNearest(t, ScanRange);
+        if (found != null && ignored.TryGetValue(found.GameObjectId, out var until) && DateTime.UtcNow < until)
+            found = null;
         if (found != null)
         {
             travel.Stop();
             mob = found;
+            searchRounds = 0;
+            approachDest = default;
+            lastApproachPath = DateTime.MinValue;
             Go(HuntState.Approaching, $"Found {t.Name}");
             WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
         }
 
-        if (travel.IsBusy)
+        // Chain to the next waypoint just before arriving so movement flows instead of stop-start.
+        var nearlyThere = pauseAtDest <= 0 && searchDest is { } d && Flat(pos, d) < 6f;
+        if (travel.IsBusy && !nearlyThere)
         {
-            if (CheckStuck(pos)) return;
+            CheckStuck(pos);
+            return;
+        }
+
+        if (pauseAtDest > 0 && !travel.IsBusy)
+        {
+            waitUntil = DateTime.UtcNow.AddSeconds(pauseAtDest); // brief look-around on arrival
+            pauseAtDest = 0;
             return;
         }
 
@@ -194,13 +227,20 @@ public sealed class HuntEngine
         }
 
         var next = waypoints.Dequeue();
+        searchDest = next.Position;
         travel.MoveTo(next.Position, allowMount: Flat(pos, next.Position) > 45f);
         ResetStuck(pos);
         StatusText = $"Searching for {t.Name} (round {searchRounds}/{MaxSearchRounds})";
-        if (next.PauseSeconds > 0) waitUntil = DateTime.UtcNow.AddSeconds(next.PauseSeconds);
+        pauseAtDest = next.PauseSeconds;
     }
 
     private const float DismountRange = 20f;
+    private bool pullRetried;
+    private Vector3? searchDest;
+    private float pauseAtDest;
+    private Vector3 approachDest;
+    private DateTime lastApproachPath = DateTime.MinValue;
+    private readonly Dictionary<ulong, DateTime> ignored = new();
     private DateTime lastDismountTry = DateTime.MinValue;
 
     private void Approach(Vector3 pos)
@@ -231,28 +271,44 @@ public sealed class HuntEngine
         if (combat.InCombat)
         {
             combat.Engage(mob);
+            pullRetried = false;
             Go(HuntState.Fighting, $"Fighting {mob.Name}");
             return;
         }
 
         if (dist > EngageRange)
         {
-            if (!travel.IsBusy) travel.MoveTo(mob.Position, allowMount: dist > 60f);
-            if (DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(30)) Go(HuntState.Searching, "Could not reach mob, searching");
+            StatusText = $"Approaching {mob.Name} ({dist:F0}y)";
+            var now = DateTime.UtcNow;
+            var mobMoved = Vector3.Distance(mob.Position, approachDest) > 3f;
+            if (now - lastApproachPath > TimeSpan.FromSeconds(1.5) && (mobMoved || !travel.IsBusy))
+            {
+                travel.MoveTo(mob.Position, allowMount: dist > 60f);
+                approachDest = mob.Position;
+                lastApproachPath = now;
+            }
+            if (now - stateSince > TimeSpan.FromSeconds(25))
+            {
+                ignored[mob.GameObjectId] = now.AddSeconds(60);
+                travel.Stop();
+                Go(HuntState.Searching, $"Could not reach {mob.Name}, looking for another");
+                mob = null;
+            }
             return;
         }
 
         travel.Stop();
         combat.Engage(mob);
+        pullRetried = false;
         Go(HuntState.Fighting, $"Fighting {mob.Name}");
     }
 
     private void Fight()
     {
-        if (!combat.InCombat && mob != null && !mob.IsDead && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(4)
-            && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(5))
+        if (!combat.InCombat && mob != null && !mob.IsDead && !pullRetried && DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(3))
         {
-            combat.Engage(mob); // nudge once if the pull did not start
+            pullRetried = true;
+            combat.Pull(mob); // retry the pull once if it did not land
             return;
         }
         if (combat.InCombat)
@@ -282,6 +338,8 @@ public sealed class HuntEngine
             return;
         }
         Current = Current with { KillsRemaining = left };
+        searchRounds = 0;
+        waypoints.Clear();
         Go(HuntState.Searching, $"{t.Name}: {left} left");
         WaitRandom(0.1, 0.5);
     }
