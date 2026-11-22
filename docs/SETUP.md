@@ -17,4 +17,4 @@
 
 ## Releasing a new version
 
-Push a tag such as `v0.1.1`. The GitHub Action builds the plugin, attaches `latest.zip` to a release, and bumps `repo.json`, so the in-game updater sees it.
+Bump `<Version>` in `HuntingLogHelper/HuntingLogHelper.csproj` (for example `0.2.1.0`) and merge to main. The Release workflow builds the plugin, publishes `latest.zip` as release `v0.2.1.0`, and updates `repo.json`, so the in-game updater sees it.
