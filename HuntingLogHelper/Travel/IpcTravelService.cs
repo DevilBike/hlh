@@ -62,6 +62,10 @@ public sealed unsafe class IpcTravelService : ITravelService
 
     public bool IsMounted => Mounted;
 
+    public bool IsComputingPath => Try(() => pathfindInProgress.InvokeFunc(), false);
+
+    public void Jump() => UseGeneralAction(2); // GeneralAction: Jump
+
     public bool IsInZone(uint territoryId) => Plugin.ClientState.TerritoryType == territoryId;
 
     public void TravelToZone(HuntArea area)
@@ -72,16 +76,18 @@ public sealed unsafe class IpcTravelService : ITravelService
         if (telepo != null) telepo->Teleport(area.AetheryteId, 0);
     }
 
-    public void MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false)
+    public bool MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false)
     {
         var me = Plugin.ObjectTable.LocalPlayer;
-        if (me == null) return;
+        if (me == null) return false;
 
         // Map waypoints have no height: drop them onto the floor. Real positions (mobs) only need
         // the nearest walkable point, so we don't snap onto a rock or ledge above them.
         var snapped = exactHeight
             ? Try(() => nearestPoint.InvokeFunc(destination, 3f, 5f), null)
-            : Try(() => pointOnFloor.InvokeFunc(destination with { Y = me.Position.Y + 50f }, false, 8f), null);
+            : Try(() => pointOnFloor.InvokeFunc(destination with { Y = me.Position.Y + 50f }, false, 8f), null)
+              ?? Try(() => nearestPoint.InvokeFunc(destination with { Y = me.Position.Y }, 12f, 60f), null);
+        if (snapped == null && !exactHeight) return false; // not walkable (rock, water, cliff): skip it
         var target = snapped ?? destination;
 
         var far = Vector3.Distance(me.Position, target) > MountDistance;
@@ -90,10 +96,11 @@ public sealed unsafe class IpcTravelService : ITravelService
             pendingDestination = target;
             UseGeneralAction(MountRouletteAction);
             mountRequestedAt = DateTime.UtcNow;
-            return; // Update() starts the path once mounted
+            return true; // Update() starts the path once mounted
         }
 
         StartPath(target);
+        return true;
     }
 
     /// <summary>Called every frame by the engine so a pending mount-then-move can finish.</summary>

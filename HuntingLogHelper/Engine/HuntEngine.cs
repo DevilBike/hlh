@@ -205,6 +205,7 @@ public sealed class HuntEngine
             travel.Stop();
             mob = found;
             searchRounds = 0;
+            stuckCount = 0;
             approachDest = default;
             lastApproachPath = DateTime.MinValue;
             approachBest = float.MaxValue;
@@ -237,9 +238,17 @@ public sealed class HuntEngine
             if (waypoints.Count == 0) { Skip("no search points"); return; }
         }
 
+        if (searchDest is { } prev && Flat(pos, prev) < 8f) stuckCount = 0; // arrived: progress
+
         var next = waypoints.Dequeue();
+        // Skip points that aren't on walkable ground; try up to a few before waiting a tick.
+        var tries = 0;
+        while (!travel.MoveTo(next.Position, allowMount: Flat(pos, next.Position) > 45f))
+        {
+            if (waypoints.Count == 0 || ++tries > 4) { searchDest = null; return; }
+            next = waypoints.Dequeue();
+        }
         searchDest = next.Position;
-        travel.MoveTo(next.Position, allowMount: Flat(pos, next.Position) > 45f);
         ResetStuck(pos);
         StatusText = $"Searching for {t.Name} (round {searchRounds}/{MaxSearchRounds})";
         pauseAtDest = next.PauseSeconds;
@@ -405,10 +414,16 @@ public sealed class HuntEngine
     private bool CheckStuck(Vector3 pos)
     {
         if (Vector3.Distance(pos, lastPos) > 1.5f) { ResetStuck(pos); return false; }
+        if (travel.IsComputingPath) { lastMoved = DateTime.UtcNow; return false; } // standing still while the path is computed
         if (DateTime.UtcNow - lastMoved < StuckWindow) return false;
-        travel.Stop();
+
+        stuckCount++;
         ResetStuck(pos);
-        if (++stuckCount >= 5) { Stop("Stopped: stuck repeatedly"); return true; }
+        if (stuckCount >= 6) { Stop("Stopped: stuck 6 times in a row"); return true; }
+        // First try a hop (looks natural and clears small snags), then give up on this waypoint.
+        if (stuckCount % 2 == 1) { travel.Jump(); return false; }
+        travel.Stop();
+        StatusText = "Snagged, picking another spot";
         return true; // next tick picks the next waypoint
     }
 

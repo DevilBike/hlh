@@ -1,7 +1,7 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <!-- Bump the SDK version above to match the current Dalamud API level when it changes. -->
   <PropertyGroup>
-    <Version>0.2.7.0</Version>
+    <Version>0.2.8.0</Version>
     <Description>Works through your class hunting log automatically.</Description>
     <PackageProjectUrl>https://github.com/DevilBike/hlh</PackageProjectUrl>
     <IsPackable>false</IsPackable>
