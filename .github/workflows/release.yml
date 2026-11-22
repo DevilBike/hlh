@@ -1,26 +1,42 @@
 name: Release
 
-# Push a tag like v0.1.1 to build, publish a GitHub release, and bump repo.json.
+# Releases automatically when <Version> in HuntingLogHelper.csproj changes on main.
+# Bump the version in a PR; merging it publishes latest.zip and updates repo.json.
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+    paths: ['HuntingLogHelper/**']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
+
+      - name: Read version
+        id: ver
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [xml]$proj = Get-Content HuntingLogHelper/HuntingLogHelper.csproj
+          $version = ($proj.Project.PropertyGroup | Where-Object { $_.Version } | Select-Object -First 1).Version
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          gh release view "v$version" *> $null
+          if ($LASTEXITCODE -eq 0) { echo "exists=true" >> $env:GITHUB_OUTPUT } else { echo "exists=false" >> $env:GITHUB_OUTPUT }
+          exit 0
 
       - uses: actions/setup-dotnet@v4
+        if: steps.ver.outputs.exists == 'false'
         with:
           dotnet-version: '10.x'
 
       - name: Download Dalamud
+        if: steps.ver.outputs.exists == 'false'
         shell: pwsh
         run: |
           $dest = "$env:AppData\XIVLauncher\addon\Hooks\dev"
@@ -29,14 +45,11 @@ jobs:
           Expand-Archive -Force latest-dalamud.zip $dest
 
       - name: Build
-        shell: pwsh
-        run: |
-          $version = "${{ github.ref_name }}".TrimStart('v')
-          if ($version.Split('.').Count -eq 3) { $version = "$version.0" }
-          dotnet build HuntingLogHelper/HuntingLogHelper.csproj -c Release -p:Version=$version
-          echo "VERSION=$version" >> $env:GITHUB_ENV
+        if: steps.ver.outputs.exists == 'false'
+        run: dotnet build HuntingLogHelper/HuntingLogHelper.csproj -c Release
 
       - name: Find package
+        if: steps.ver.outputs.exists == 'false'
         shell: pwsh
         run: |
           $zip = Get-ChildItem -Recurse -Path HuntingLogHelper/bin -Filter latest.zip | Select-Object -First 1
@@ -44,18 +57,24 @@ jobs:
           Copy-Item $zip.FullName ./latest.zip
 
       - name: Publish release
+        if: steps.ver.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: v${{ steps.ver.outputs.version }}
+          target_commitish: ${{ github.sha }}
           files: latest.zip
 
       - name: Bump repo.json
+        if: steps.ver.outputs.exists == 'false'
         shell: pwsh
         run: |
           $repo = Get-Content repo.json -Raw | ConvertFrom-Json
-          $repo[0].AssemblyVersion = $env:VERSION
+          $repo[0].AssemblyVersion = "${{ steps.ver.outputs.version }}"
           ConvertTo-Json @($repo) -Depth 5 | Set-Content repo.json
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add repo.json
-          git commit -m "Bump repo.json to $env:VERSION" || echo "No change"
-          git push origin HEAD:main
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) { git commit -m "Bump repo.json to ${{ steps.ver.outputs.version }}"; git push origin HEAD:main }
+          exit 0
