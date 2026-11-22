@@ -16,11 +16,11 @@ public enum HuntState { Idle, Choosing, Traveling, Searching, Approaching, Fight
 /// </summary>
 public sealed class HuntEngine
 {
-    private const float ScanRange = 45f;
+    private const float ScanRange = 60f;
     private const float EngageRange = 3.5f;
     private static readonly TimeSpan TravelTimeout = TimeSpan.FromSeconds(60);
     private static readonly TimeSpan StuckWindow = TimeSpan.FromSeconds(8);
-    private static readonly TimeSpan VerifyDelay = TimeSpan.FromSeconds(2.5);
+    private static readonly TimeSpan VerifyTimeout = TimeSpan.FromSeconds(3);
     private const int MaxSearchRounds = 4;
 
     private readonly ITargetDatabase db;
@@ -127,8 +127,11 @@ public sealed class HuntEngine
 
         Current = queue[0];
         var t = Current.Target;
-        // Prefer an area in the zone we are already in, else the best-observed one.
-        area = t.Areas.FirstOrDefault(a => travel.IsInZone(a.TerritoryId)) ?? t.Areas[0];
+        // Prefer the zone we are in, then zones whose aetheryte is attuned, then the best-observed one.
+        var attuned = Plugin.AetheryteList.Select(a => a.AetheryteId).ToHashSet();
+        area = t.Areas.FirstOrDefault(a => travel.IsInZone(a.TerritoryId))
+               ?? t.Areas.FirstOrDefault(a => attuned.Contains(a.AetheryteId))
+               ?? t.Areas[0];
         searchRounds = 0;
         travelAttempts = 0;
         waypoints.Clear();
@@ -173,7 +176,7 @@ public sealed class HuntEngine
             travel.Stop();
             mob = found;
             Go(HuntState.Approaching, $"Found {t.Name}");
-            WaitRandom(0.2, 0.8); // short human-ish reaction time
+            WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
         }
 
@@ -197,11 +200,31 @@ public sealed class HuntEngine
         if (next.PauseSeconds > 0) waitUntil = DateTime.UtcNow.AddSeconds(next.PauseSeconds);
     }
 
+    private const float DismountRange = 20f;
+    private DateTime lastDismountTry = DateTime.MinValue;
+
     private void Approach(Vector3 pos)
     {
         if (mob == null || mob.IsDead || !mob.IsValid())
         {
             Go(HuntState.Searching, $"Lost {Current!.Target.Name}, searching");
+            return;
+        }
+
+        var dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
+
+        // Get off the mount before fighting. Flying needs two presses (land, then dismount),
+        // so keep pressing about once a second until the game says we're on foot.
+        if (travel.IsMounted && (dist <= DismountRange || combat.InCombat))
+        {
+            if (travel.IsBusy) travel.Stop();
+            if (DateTime.UtcNow - lastDismountTry > TimeSpan.FromSeconds(1))
+            {
+                travel.Dismount();
+                lastDismountTry = DateTime.UtcNow;
+            }
+            StatusText = $"Dismounting near {mob.Name}";
+            if (DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(10)) Go(HuntState.Searching, "Could not dismount, searching");
             return;
         }
 
@@ -212,7 +235,6 @@ public sealed class HuntEngine
             return;
         }
 
-        var dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
         if (dist > EngageRange)
         {
             if (!travel.IsBusy) travel.MoveTo(mob.Position, allowMount: dist > 60f);
@@ -221,7 +243,6 @@ public sealed class HuntEngine
         }
 
         travel.Stop();
-        travel.Dismount();
         combat.Engage(mob);
         Go(HuntState.Fighting, $"Fighting {mob.Name}");
     }
@@ -234,10 +255,9 @@ public sealed class HuntEngine
             if (mob != null && !mob.IsDead && Plugin.TargetManager.Target == null) Plugin.TargetManager.Target = mob;
             return;
         }
-        if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(3)) return; // combat may not have registered yet
+        if (DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(1)) return; // combat may not have registered yet
         mob = null;
         Go(HuntState.Verifying, "Checking hunting log");
-        waitUntil = DateTime.UtcNow + VerifyDelay;
     }
 
     private void Verify()
@@ -245,16 +265,18 @@ public sealed class HuntEngine
         var t = Current!.Target;
         var left = progress.KillsRemaining(t);
         if (left < 0) return; // log data not ready, try next tick
+        // Move on as soon as the log registers the kill; only wait while the count hasn't changed yet.
+        if (left == Current.KillsRemaining && left > 0 && DateTime.UtcNow - stateSince < VerifyTimeout) return;
         if (left == 0)
         {
             Plugin.Chat.Print($"[HLH] Hunting log: {t.Name} complete.");
             Go(HuntState.Choosing, $"{t.Name} complete");
-            WaitRandom(1.0, 3.0);
+            WaitRandom(0.3, 1.0);
             return;
         }
         Current = Current with { KillsRemaining = left };
         Go(HuntState.Searching, $"{t.Name}: {left} left");
-        WaitRandom(0.5, 2.0);
+        WaitRandom(0.1, 0.5);
     }
 
     private void Skip(string why)

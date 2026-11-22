@@ -58,6 +58,8 @@ public sealed unsafe class IpcTravelService : ITravelService
         || Try(() => pathfindInProgress.InvokeFunc(), false)
         || Try(() => pathIsRunning.InvokeFunc(), false);
 
+    public bool IsMounted => Mounted;
+
     public bool IsInZone(uint territoryId) => Plugin.ClientState.TerritoryType == territoryId;
 
     public void TravelToZone(HuntArea area)

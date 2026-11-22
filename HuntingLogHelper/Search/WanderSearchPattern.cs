@@ -76,7 +76,7 @@ public sealed class WanderSearchPattern : ISearchPattern
     }
 
     /// <summary>Most points: no pause. Some: a short look-around.</summary>
-    private float Pause() => rng.NextDouble() < 0.35 ? 0.6f + (float)rng.NextDouble() * 2.4f : 0f;
+    private float Pause() => rng.NextDouble() < 0.2 ? 0.3f + (float)rng.NextDouble() * 1.2f : 0f;
 
     private int WeightedIndex(int n)
     {
