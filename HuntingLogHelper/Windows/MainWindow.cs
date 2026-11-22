@@ -54,6 +54,10 @@ public class MainWindow : Window, IDisposable
             var flying = cfg.UseFlying;
             if (ImGui.Checkbox("Fly where unlocked", ref flying)) { cfg.UseFlying = flying; cfg.Save(); }
 
+            var dbg = cfg.DebugLogging;
+            if (ImGui.Checkbox("Write debug log (hlh-debug.log)", ref dbg)) { cfg.DebugLogging = dbg; DebugLog.Enabled = dbg; cfg.Save(); }
+            if (DebugLog.FilePath != null) ImGui.TextDisabled(DebugLog.FilePath);
+
             ImGui.BeginDisabled();
             var gc = cfg.EnableGrandCompanyLog;
             ImGui.Checkbox("Grand Company log (after class log is verified)", ref gc);

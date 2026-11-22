@@ -105,6 +105,7 @@ public sealed class HuntEngine
         catch (Exception ex)
         {
             Plugin.Log.Error(ex, "[HLH] Tick failed");
+            DebugLog.Write($"ERROR in {State}: {ex}");
             StatusText = $"Error in {State}: {ex.Message}";
         }
     }
@@ -245,6 +246,7 @@ public sealed class HuntEngine
         var tries = 0;
         while (!travel.MoveTo(next.Position, allowMount: Flat(pos, next.Position) > 45f))
         {
+            DebugLog.Write($"WAYPOINT unwalkable {DebugLog.V(next.Position)}, skipping");
             if (waypoints.Count == 0 || ++tries > 4) { searchDest = null; return; }
             next = waypoints.Dequeue();
         }
@@ -311,6 +313,7 @@ public sealed class HuntEngine
                 travel.MoveTo(mob.Position, allowMount: dist > 60f, exactHeight: true);
                 approachDest = mob.Position;
                 lastApproachPath = now;
+                DebugLog.Write($"APPROACH {mob.Name} id {mob.GameObjectId:X} at {DebugLog.V(mob.Position)} dist {dist:F1} best {approachBest:F1} busy={travel.IsBusy} computing={travel.IsComputingPath}");
             }
             // Give up on this mob if we stop getting closer (e.g. pressed against a wall or cliff).
             if (dist < approachBest - 1f) { approachBest = dist; approachProgressAt = now; }
@@ -319,6 +322,7 @@ public sealed class HuntEngine
                 ignored[mob.GameObjectId] = now.AddSeconds(60);
                 travel.Stop();
                 combat.StandDown();
+                DebugLog.Write($"APPROACH gave up on {mob.Name}: best {approachBest:F1}, now {dist:F1}, {(now - stateSince).TotalSeconds:F0}s");
                 Go(HuntState.Searching, $"Could not reach {mob.Name}, looking for another");
                 mob = null;
             }
@@ -351,6 +355,7 @@ public sealed class HuntEngine
                     travel.MoveTo(mob.Position, allowMount: false, exactHeight: true);
                 combat.Pull(mob);
                 lastPull = DateTime.UtcNow;
+                DebugLog.Write($"PULL {mob.Name} dist {Vector3.Distance(Plugin.ObjectTable.LocalPlayer!.Position, mob.Position):F1} hitbox {mob.HitboxRadius:F1}");
             }
             return;
         }
@@ -407,6 +412,7 @@ public sealed class HuntEngine
         var t = Current!.Target;
         skipped.Add(t);
         Plugin.Chat.Print($"[HLH] Skipping {t.Name}: {why}.");
+        DebugLog.Write($"SKIP {t.Name}: {why}");
         travel.Stop();
         Go(HuntState.Choosing, $"Skipped {t.Name} ({why})");
     }
@@ -419,6 +425,7 @@ public sealed class HuntEngine
 
         stuckCount++;
         ResetStuck(pos);
+        DebugLog.Write($"STUCK #{stuckCount} at {DebugLog.V(pos)} heading to {DebugLog.V(searchDest)} mounted={travel.IsMounted}");
         if (stuckCount >= 6) { Stop("Stopped: stuck 6 times in a row"); return true; }
         // First try a hop (looks natural and clears small snags), then give up on this waypoint.
         if (stuckCount % 2 == 1) { travel.Jump(); return false; }
@@ -435,6 +442,8 @@ public sealed class HuntEngine
         StatusText = status;
         stateSince = DateTime.UtcNow;
         Plugin.Log.Debug($"[HLH] {s}: {status}");
+        var me = Plugin.ObjectTable.LocalPlayer;
+        DebugLog.Write($"STATE {s} | {status} | terr {Plugin.ClientState.TerritoryType} pos {DebugLog.V(me?.Position)}");
     }
 
     private void WaitRandom(double minSec, double maxSec) =>
