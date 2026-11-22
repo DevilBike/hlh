@@ -199,6 +199,8 @@ public sealed class HuntEngine
             searchRounds = 0;
             approachDest = default;
             lastApproachPath = DateTime.MinValue;
+            approachBest = float.MaxValue;
+            approachProgressAt = DateTime.UtcNow;
             Go(HuntState.Approaching, $"Found {t.Name}");
             WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
@@ -239,6 +241,8 @@ public sealed class HuntEngine
     private Vector3? searchDest;
     private float pauseAtDest;
     private Vector3 approachDest;
+    private float approachBest = float.MaxValue;
+    private DateTime approachProgressAt = DateTime.UtcNow;
     private DateTime lastApproachPath = DateTime.MinValue;
     private readonly Dictionary<ulong, DateTime> ignored = new();
     private DateTime lastDismountTry = DateTime.MinValue;
@@ -283,11 +287,13 @@ public sealed class HuntEngine
             var mobMoved = Vector3.Distance(mob.Position, approachDest) > 3f;
             if (now - lastApproachPath > TimeSpan.FromSeconds(1.5) && (mobMoved || !travel.IsBusy))
             {
-                travel.MoveTo(mob.Position, allowMount: dist > 60f);
+                travel.MoveTo(mob.Position, allowMount: dist > 60f, exactHeight: true);
                 approachDest = mob.Position;
                 lastApproachPath = now;
             }
-            if (now - stateSince > TimeSpan.FromSeconds(25))
+            // Give up on this mob if we stop getting closer (e.g. pressed against a wall or cliff).
+            if (dist < approachBest - 1f) { approachBest = dist; approachProgressAt = now; }
+            if (now - approachProgressAt > TimeSpan.FromSeconds(5) || now - stateSince > TimeSpan.FromSeconds(25))
             {
                 ignored[mob.GameObjectId] = now.AddSeconds(60);
                 travel.Stop();

@@ -37,7 +37,8 @@ public interface ITravelService
     bool IsInZone(uint territoryId);
     void TravelToZone(HuntArea area);
     /// <summary>Path to a point. Mounts/flies for long trips when the config allows it.</summary>
-    void MoveTo(Vector3 destination, bool allowMount);
+    /// <param name="exactHeight">True when destination.Y is real (e.g. a mob's position); false for map X/Z waypoints.</param>
+    void MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false);
     void Dismount();
     void Stop();
     /// <summary>Per-frame housekeeping (e.g. finish a mount-then-move).</summary>

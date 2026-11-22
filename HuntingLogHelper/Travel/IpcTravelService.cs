@@ -27,6 +27,7 @@ public sealed unsafe class IpcTravelService : ITravelService
     private readonly ICallGateSubscriber<bool> pathfindInProgress;
     private readonly ICallGateSubscriber<object> pathStop;
     private readonly ICallGateSubscriber<Vector3, bool, float, Vector3?> pointOnFloor;
+    private readonly ICallGateSubscriber<Vector3, float, float, Vector3?> nearestPoint;
     private readonly ICallGateSubscriber<uint, byte, bool> lifestreamTeleport;
     private readonly ICallGateSubscriber<bool> lifestreamIsBusy;
 
@@ -43,6 +44,7 @@ public sealed unsafe class IpcTravelService : ITravelService
         pathfindInProgress = pi.GetIpcSubscriber<bool>("vnavmesh.SimpleMove.PathfindInProgress");
         pathStop = pi.GetIpcSubscriber<object>("vnavmesh.Path.Stop");
         pointOnFloor = pi.GetIpcSubscriber<Vector3, bool, float, Vector3?>("vnavmesh.Query.Mesh.PointOnFloor");
+        nearestPoint = pi.GetIpcSubscriber<Vector3, float, float, Vector3?>("vnavmesh.Query.Mesh.NearestPoint");
         lifestreamTeleport = pi.GetIpcSubscriber<uint, byte, bool>("Lifestream.Teleport");
         lifestreamIsBusy = pi.GetIpcSubscriber<bool>("Lifestream.IsBusy");
     }
@@ -70,14 +72,17 @@ public sealed unsafe class IpcTravelService : ITravelService
         if (telepo != null) telepo->Teleport(area.AetheryteId, 0);
     }
 
-    public void MoveTo(Vector3 destination, bool allowMount)
+    public void MoveTo(Vector3 destination, bool allowMount, bool exactHeight = false)
     {
         var me = Plugin.ObjectTable.LocalPlayer;
         if (me == null) return;
 
-        // Snap the X/Z waypoint onto the navmesh floor (data has no height).
-        var floor = Try(() => pointOnFloor.InvokeFunc(destination with { Y = me.Position.Y + 50f }, false, 8f), null);
-        var target = floor ?? destination;
+        // Map waypoints have no height: drop them onto the floor. Real positions (mobs) only need
+        // the nearest walkable point, so we don't snap onto a rock or ledge above them.
+        var snapped = exactHeight
+            ? Try(() => nearestPoint.InvokeFunc(destination, 3f, 5f), null)
+            : Try(() => pointOnFloor.InvokeFunc(destination with { Y = me.Position.Y + 50f }, false, 8f), null);
+        var target = snapped ?? destination;
 
         var far = Vector3.Distance(me.Position, target) > MountDistance;
         if (allowMount && far && config.UseMounts && !Mounted && !Plugin.Condition[ConditionFlag.InCombat])
