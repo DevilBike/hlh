@@ -93,10 +93,20 @@ public sealed class HuntEngine
         Go(HuntState.Stopped, reason);
     }
 
-    /// <summary>Called every framework tick.</summary>
+    /// <summary>Called every framework tick. Errors are shown in the status instead of freezing the loop silently.</summary>
     public void Tick()
     {
         if (!Running) return;
+        try { TickInner(); }
+        catch (Exception ex)
+        {
+            Plugin.Log.Error(ex, "[HLH] Tick failed");
+            StatusText = $"Error in {State}: {ex.Message}";
+        }
+    }
+
+    private void TickInner()
+    {
         travel.Update();
 
         var me = Plugin.ObjectTable.LocalPlayer;
@@ -180,11 +190,15 @@ public sealed class HuntEngine
     {
         var t = Current!.Target;
         var found = scanner.FindNearest(t, ScanRange);
+        if (found != null && ignored.TryGetValue(found.GameObjectId, out var until) && DateTime.UtcNow < until)
+            found = null;
         if (found != null)
         {
             travel.Stop();
             mob = found;
             searchRounds = 0;
+            approachDest = default;
+            lastApproachPath = DateTime.MinValue;
             Go(HuntState.Approaching, $"Found {t.Name}");
             WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
@@ -211,6 +225,9 @@ public sealed class HuntEngine
     }
 
     private const float DismountRange = 20f;
+    private Vector3 approachDest;
+    private DateTime lastApproachPath = DateTime.MinValue;
+    private readonly Dictionary<ulong, DateTime> ignored = new();
     private DateTime lastDismountTry = DateTime.MinValue;
 
     private void Approach(Vector3 pos)
@@ -247,8 +264,22 @@ public sealed class HuntEngine
 
         if (dist > EngageRange)
         {
-            if (!travel.IsBusy) travel.MoveTo(mob.Position, allowMount: dist > 60f);
-            if (DateTime.UtcNow - stateSince > TimeSpan.FromSeconds(30)) Go(HuntState.Searching, "Could not reach mob, searching");
+            StatusText = $"Approaching {mob.Name} ({dist:F0}y)";
+            var now = DateTime.UtcNow;
+            var mobMoved = Vector3.Distance(mob.Position, approachDest) > 3f;
+            if (now - lastApproachPath > TimeSpan.FromSeconds(1.5) && (mobMoved || !travel.IsBusy))
+            {
+                travel.MoveTo(mob.Position, allowMount: dist > 60f);
+                approachDest = mob.Position;
+                lastApproachPath = now;
+            }
+            if (now - stateSince > TimeSpan.FromSeconds(25))
+            {
+                ignored[mob.GameObjectId] = now.AddSeconds(60);
+                travel.Stop();
+                Go(HuntState.Searching, $"Could not reach {mob.Name}, looking for another");
+                mob = null;
+            }
             return;
         }
 
