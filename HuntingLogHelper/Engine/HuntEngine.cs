@@ -30,7 +30,9 @@ public sealed class HuntEngine
     private readonly ITargetScanner scanner;
     private readonly ICombatController combat;
     private readonly Configuration config;
+    private readonly HuntingLogHelper.Data.LearnedSpawns learned;
     private readonly Random rng = new();
+    private DateTime lastLearn = DateTime.MinValue;
 
     private readonly HashSet<HuntTarget> skipped = new();
     private HuntArea? area;
@@ -51,8 +53,10 @@ public sealed class HuntEngine
     public bool Running => State is not (HuntState.Idle or HuntState.Done or HuntState.Stopped);
 
     public HuntEngine(ITargetDatabase db, ILogProgressReader progress, ITravelService travel,
-        ISearchPattern search, ITargetScanner scanner, ICombatController combat, Configuration config)
+        ISearchPattern search, ITargetScanner scanner, ICombatController combat, Configuration config,
+        HuntingLogHelper.Data.LearnedSpawns learned)
     {
+        this.learned = learned;
         this.db = db; this.progress = progress; this.travel = travel;
         this.search = search; this.scanner = scanner; this.combat = combat; this.config = config;
     }
@@ -151,6 +155,8 @@ public sealed class HuntEngine
         area = t.Areas.FirstOrDefault(a => travel.IsInZone(a.TerritoryId))
                ?? t.Areas.FirstOrDefault(a => attuned.Contains(a.AetheryteId))
                ?? t.Areas[0];
+        // Approximate areas: use spawns we've seen ourselves once we have a few.
+        if (t.Approximate && learned.AreaFor(t, area) is { } seen) area = seen;
         searchRounds = 0;
         travelAttempts = 0;
         waypoints.Clear();
@@ -189,7 +195,9 @@ public sealed class HuntEngine
     private void Search(Vector3 pos)
     {
         var t = Current!.Target;
-        var found = scanner.FindNearest(t, ScanRange);
+        Learn(pos);
+        var range = t.Approximate && area!.Observations == 0 ? 90f : ScanRange;
+        var found = scanner.FindNearest(t, range);
         if (found != null && ignored.TryGetValue(found.GameObjectId, out var until) && DateTime.UtcNow < until)
             found = null;
         if (found != null)
@@ -369,6 +377,20 @@ public sealed class HuntEngine
         waypoints.Clear();
         Go(HuntState.Searching, $"{t.Name}: {left} left");
         WaitRandom(0.1, 0.5);
+    }
+
+    /// <summary>Remember where we see any hunting log target, so approximate areas get real spawn points.</summary>
+    private void Learn(Vector3 pos)
+    {
+        if (DateTime.UtcNow - lastLearn < TimeSpan.FromSeconds(1)) return;
+        lastLearn = DateTime.UtcNow;
+        var terr = (uint)Plugin.ClientState.TerritoryType;
+        var wanted = db.All(LogKind.Class).Concat(db.All(LogKind.GrandCompany))
+            .Where(t => t.Approximate).Select(t => t.BNpcNameId).ToHashSet();
+        foreach (var npc in Plugin.ObjectTable.OfType<IBattleNpc>())
+            if (wanted.Contains(npc.NameId) && !npc.IsDead)
+                learned.Record(npc.NameId, terr, npc.Position);
+        learned.SaveIfDirty();
     }
 
     private void Skip(string why)

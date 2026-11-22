@@ -19,7 +19,7 @@ public sealed class WanderSearchPattern : ISearchPattern
     {
         var points = area.SpawnPoints.Count > 0
             ? FromSpawnPoints(area, playerPosition)
-            : RandomWalk(area, playerPosition);
+            : Coverage(area, playerPosition);
 
         foreach (var p in points)
             yield return new Waypoint(new Vector3(p.X, playerPosition.Y, p.Y), Pause());
@@ -39,6 +39,29 @@ public sealed class WanderSearchPattern : ISearchPattern
             remaining.Remove(pick);
             here = Jitter(pick, 3f, 7f);
             yield return here;
+        }
+    }
+
+    /// <summary>
+    /// Approximate area: sweep loose rings outward from the sub-area label (about 35, 70 and 105
+    /// yalms) with a random start angle, varied spacing and jitter, so the whole area gets covered
+    /// without a visible grid.
+    /// </summary>
+    private IEnumerable<Vector2> Coverage(HuntArea area, Vector3 player)
+    {
+        var center = area.CenterXZ;
+        var maxR = Math.Max(area.Radius, 105f);
+        var dir = rng.Next(2) == 0 ? 1 : -1;
+        for (var ring = 35f; ring <= maxR + 1f; ring += 35f)
+        {
+            var count = Math.Max(4, (int)(2 * Math.PI * ring / 55f));
+            var start = (float)(rng.NextDouble() * Math.PI * 2);
+            for (var i = 0; i < count; i++)
+            {
+                var a = start + dir * (float)(i * 2 * Math.PI / count) + (float)((rng.NextDouble() - 0.5) * 0.4);
+                var r = ring + (float)((rng.NextDouble() - 0.5) * 14);
+                yield return center + new Vector2(MathF.Cos(a), MathF.Sin(a)) * r;
+            }
         }
     }
 
