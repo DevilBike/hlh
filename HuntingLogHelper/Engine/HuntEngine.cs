@@ -37,6 +37,7 @@ public sealed class HuntEngine
     private Queue<Waypoint> waypoints = new();
     private IBattleNpc? mob;
     private int searchRounds;
+    private bool retriedSkipped;
     private int travelAttempts;
     private DateTime stateSince = DateTime.UtcNow;
     private DateTime waitUntil = DateTime.MinValue;
@@ -70,7 +71,8 @@ public sealed class HuntEngine
             .Where(t => t.Level <= level + config.MaxLevelsAbove)
             .Select(t => new QueuedTarget(t, progress.KillsRemaining(t)))
             .Where(q => q.KillsRemaining > 0)
-            .OrderBy(q => Math.Abs(q.Target.Level - level))
+            .OrderBy(q => q.Target.Level)
+            .ThenBy(q => q.Target.Areas.Any(a => travel.IsInZone(a.TerritoryId)) ? 0 : 1)
             .ThenBy(q => q.Target.Entry)
             .ToList();
     }
@@ -78,6 +80,7 @@ public sealed class HuntEngine
     public void Start()
     {
         skipped.Clear();
+        retriedSkipped = false;
         stuckCount = 0;
         Go(HuntState.Choosing, "Starting");
     }
@@ -116,6 +119,12 @@ public sealed class HuntEngine
     private void Choose(Vector3 pos)
     {
         var queue = BuildQueue();
+        if (queue.Count == 0 && skipped.Count > 0 && !retriedSkipped)
+        {
+            retriedSkipped = true;
+            skipped.Clear();
+            queue = BuildQueue();
+        }
         if (queue.Count == 0)
         {
             combat.Disengage();
@@ -175,6 +184,7 @@ public sealed class HuntEngine
         {
             travel.Stop();
             mob = found;
+            searchRounds = 0;
             Go(HuntState.Approaching, $"Found {t.Name}");
             WaitRandom(0.1, 0.4); // short human-ish reaction time
             return;
@@ -282,6 +292,8 @@ public sealed class HuntEngine
             return;
         }
         Current = Current with { KillsRemaining = left };
+        searchRounds = 0;
+        waypoints.Clear();
         Go(HuntState.Searching, $"{t.Name}: {left} left");
         WaitRandom(0.1, 0.5);
     }
