@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+      - name: Download Dalamud
+        shell: pwsh
+        run: |
+          $dest = "$env:AppData\XIVLauncher\addon\Hooks\dev"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/latest.zip -OutFile latest-dalamud.zip
+          Expand-Archive -Force latest-dalamud.zip $dest
+      - name: Build
+        run: dotnet build HuntingLogHelper/HuntingLogHelper.csproj -c Release
