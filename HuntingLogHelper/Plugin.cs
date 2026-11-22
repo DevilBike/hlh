@@ -51,7 +51,8 @@ public sealed class Plugin : IDalamudPlugin
             new WanderSearchPattern(),
             new ObjectTableScanner(),
             new BmrRsrCombatController(),
-            Configuration);
+            Configuration,
+            new LearnedSpawns(PluginInterface.GetPluginConfigDirectory()));
         Framework.Update += OnFrameworkUpdate;
 
         mainWindow = new MainWindow(this);
