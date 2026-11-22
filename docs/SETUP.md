@@ -10,7 +10,7 @@
 
 ## Build it yourself (optional)
 
-1. Install the [.NET 9 SDK](https://dotnet.microsoft.com/download) and Visual Studio 2022 or JetBrains Rider.
+1. Install the [.NET 10 SDK](https://dotnet.microsoft.com/download) and Visual Studio 2022 or JetBrains Rider.
 2. Run XIVLauncher with Dalamud at least once so the dev files exist.
 3. Open `HuntingLogHelper.sln` and build. The output DLL is in `HuntingLogHelper/bin/x64/Debug/`.
 4. In `/xlsettings` under **Experimental**, add that folder's `HuntingLogHelper.dll` as a dev plugin and enable it in `/xlplugins`.
