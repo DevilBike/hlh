@@ -31,6 +31,13 @@ public sealed unsafe class BmrRsrCombatController : ICombatController
         if (am != null) am->UseAction(ActionType.GeneralAction, AutoAttack, mob.GameObjectId);
     }
 
+    public void StandDown()
+    {
+        // BMR AI walks straight toward targets/leader outside combat (no navmesh), which runs into walls.
+        Plugin.CommandManager.ProcessCommand("/bmrai off");
+        Plugin.TargetManager.Target = null;
+    }
+
     public void Disengage()
     {
         Plugin.CommandManager.ProcessCommand("/rotation off");

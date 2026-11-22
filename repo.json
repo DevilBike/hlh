@@ -11,6 +11,7 @@
     "DalamudApiLevel": 15,
     "DownloadLinkInstall": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip",
     "DownloadLinkTesting": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip"
+    "DownloadLinkUpdate": "https://github.com/DevilBike/hlh/releases/latest/download/latest.zip",
+    "IconUrl": "https://raw.githubusercontent.com/DevilBike/hlh/main/images/icon.png"
   }
 ]
