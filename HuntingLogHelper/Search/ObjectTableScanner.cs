@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Numerics;
-using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using HuntingLogHelper.Core;
 
@@ -35,7 +34,7 @@ public sealed class ObjectTableScanner : ITargetScanner
         return Plugin.ObjectTable
             .OfType<IBattleNpc>()
             .Where(n => n.TargetObjectId == me.GameObjectId && !n.IsDead && n.IsTargetable && n.CurrentHp > 0
-                        && n.BattleNpcKind == BattleNpcSubKind.Enemy)
+                        && (byte)n.BattleNpcKind == 5) // 5 = Combatant (enemy)
             .Select(n => (mob: n, dist: Vector3.Distance(n.Position, me.Position)))
             .Where(x => x.dist <= maxDistance)
             .OrderBy(x => x.dist)
