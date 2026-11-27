@@ -247,25 +247,52 @@ public sealed unsafe class IpcTravelService : ITravelService
             lastDismountPress = DateTime.UtcNow;
         }
 
-        if (failedPresses >= 3)
+        // In the air one stalled descent is enough to know this spot won't land (tree, rock, steep slope).
+        if (failedPresses >= (airborne ? 1 : 3))
         {
-            // Can't land/dismount here: move to checked, landable ground a few yalms toward the mob.
-            var dir = new Vector3(toward.X - me.Position.X, 0, toward.Z - me.Position.Z);
-            dir = dir.LengthSquared() < 0.01f ? new Vector3(1, 0, 0) : Vector3.Normalize(dir);
-            var angle = (float)((rng.NextDouble() - 0.5) * Math.PI / 2);
-            var rot = new Vector3(dir.X * MathF.Cos(angle) - dir.Z * MathF.Sin(angle), 0, dir.X * MathF.Sin(angle) + dir.Z * MathF.Cos(angle));
-            var candidate = me.Position + rot * (6f + (float)rng.NextDouble() * 6f);
-            var ground = Try(() => pointOnFloor.InvokeFunc(candidate with { Y = me.Position.Y + 5f }, false, 6f), null);
-            DebugLog.Write($"DISMOUNT relocating: candidate {DebugLog.V(candidate)} ground {DebugLog.V(ground)}");
+            failedPresses = 0;
+            var ground = PickLandingSpot(me.Position, toward);
+            DebugLog.Write($"DISMOUNT relocating to {DebugLog.V(ground)}");
             if (ground != null)
             {
                 landingSpot = ground;
                 StartPath(ground.Value with { Y = ground.Value.Y + 2f }, fly: airborne);
             }
-            failedPresses = 0;
         }
         return false;
     }
+
+    /// <summary>
+    /// Landable floor to set down on. The mob is standing on real ground, so the first choice is a
+    /// navmesh point a few yalms from it on our side; then floor below spots around us.
+    /// </summary>
+    private Vector3? PickLandingSpot(Vector3 me, Vector3 mob)
+    {
+        var away = new Vector3(me.X - mob.X, 0, me.Z - mob.Z);
+        away = away.LengthSquared() < 0.01f ? new Vector3(1, 0, 0) : Vector3.Normalize(away);
+        if (Vector2.Distance(new(me.X, me.Z), new(mob.X, mob.Z)) < 40f)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                var candidate = mob + Rotate(away, (float)((rng.NextDouble() - 0.5) * Math.PI / 1.5)) * (3f + (float)rng.NextDouble() * 5f);
+                var p = Try(() => nearestPoint.InvokeFunc(candidate, 4f, 8f), null);
+                if (p != null) return p;
+            }
+        }
+        var toward = -away;
+        for (var i = 0; i < 6; i++)
+        {
+            var candidate = me + Rotate(toward, (float)((rng.NextDouble() - 0.5) * Math.PI)) * (6f + (float)rng.NextDouble() * 8f);
+            // Cast down from our own altitude: the floor may be well below us.
+            var p = Try(() => pointOnFloor.InvokeFunc(candidate, false, 3f), null)
+                    ?? Try(() => nearestPoint.InvokeFunc(candidate, 6f, 40f), null);
+            if (p != null) return p;
+        }
+        return null;
+    }
+
+    private static Vector3 Rotate(Vector3 d, float a) =>
+        new(d.X * MathF.Cos(a) - d.Z * MathF.Sin(a), 0, d.X * MathF.Sin(a) + d.Z * MathF.Cos(a));
 
     public void Stop()
     {
