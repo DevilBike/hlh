@@ -33,6 +33,13 @@ public sealed unsafe class IpcTravelService : ITravelService
 
     private Vector3? pendingDestination;
     private DateTime mountRequestedAt = DateTime.MinValue;
+    private DateTime lastMountPress = DateTime.MinValue;
+    private int mountPresses;
+
+    // The current long trip that is allowed to use a mount, so we can mount mid-route if the
+    // first attempt failed (e.g. right after a teleport the game rejects the action for a moment).
+    private Vector3? mountTrip;
+    private DateTime lastMidRouteMount = DateTime.MinValue;
 
     public IpcTravelService(Configuration config)
     {
@@ -62,7 +69,8 @@ public sealed unsafe class IpcTravelService : ITravelService
 
     public bool IsMounted => Mounted;
 
-    public bool IsComputingPath => Try(() => pathfindInProgress.InvokeFunc(), false);
+    // Mounting up counts as "getting ready to move", so the engine doesn't call it stuck.
+    public bool IsComputingPath => pendingDestination != null || Try(() => pathfindInProgress.InvokeFunc(), false);
 
     public void Jump() => UseGeneralAction(2); // GeneralAction: Jump
 
@@ -92,30 +100,82 @@ public sealed unsafe class IpcTravelService : ITravelService
         var target = snapped ?? destination;
 
         var far = Vector3.Distance(me.Position, target) > MountDistance;
-        if (allowMount && far && config.UseMounts && !Mounted && !Plugin.Condition[ConditionFlag.InCombat])
+        mountTrip = allowMount && far ? target : null;
+        if (allowMount && far && CanMountNow())
         {
             pendingDestination = target;
-            UseGeneralAction(MountRouletteAction);
             mountRequestedAt = DateTime.UtcNow;
+            mountPresses = 0;
+            lastMountPress = DateTime.MinValue;
+            PressMount();
             return true; // Update() starts the path once mounted
         }
+        if (allowMount && far)
+            DebugLog.Write($"MOUNT skipped: useMounts={config.UseMounts} mounted={Mounted} inCombat={Plugin.Condition[ConditionFlag.InCombat]} status={MountStatus()}");
 
         StartPath(target);
         return true;
     }
 
+    private bool CanMountNow() => config.UseMounts && !Mounted && !Plugin.Condition[ConditionFlag.InCombat];
+
+    private static uint MountStatus()
+    {
+        var am = ActionManager.Instance();
+        return am == null ? uint.MaxValue : am->GetActionStatus(ActionType.GeneralAction, MountRouletteAction);
+    }
+
+    private void PressMount()
+    {
+        var status = MountStatus();
+        lastMountPress = DateTime.UtcNow;
+        if (status != 0)
+        {
+            // Not usable yet (still landing from a teleport, animation lock...). Update() retries.
+            DebugLog.Write($"MOUNT not ready (status {status}), will retry");
+            return;
+        }
+        mountPresses++;
+        UseGeneralAction(MountRouletteAction);
+        DebugLog.Write($"MOUNT pressed (try {mountPresses})");
+    }
+
     /// <summary>Called every frame by the engine so a pending mount-then-move can finish.</summary>
     public void Update()
     {
-        if (pendingDestination is not { } dest) return;
-        var waited = DateTime.UtcNow - mountRequestedAt;
-        if (Mounted || waited > TimeSpan.FromSeconds(4))
+        var now = DateTime.UtcNow;
+        if (pendingDestination is { } dest)
         {
-            if (!Plugin.Condition[ConditionFlag.Casting] || waited > TimeSpan.FromSeconds(4))
+            var waited = now - mountRequestedAt;
+            var casting = Plugin.Condition[ConditionFlag.Casting];
+            if (Mounted || waited > TimeSpan.FromSeconds(8) || Plugin.Condition[ConditionFlag.InCombat])
             {
+                if (!Mounted) DebugLog.Write($"MOUNT gave up after {waited.TotalSeconds:F1}s ({mountPresses} presses), walking");
                 pendingDestination = null;
                 StartPath(dest);
             }
+            else if (!casting && now - lastMountPress > TimeSpan.FromSeconds(1.5))
+            {
+                PressMount(); // the press didn't take: try again
+            }
+            return;
+        }
+
+        // Walking a long trip without a mount (first attempt failed, or we were in combat then):
+        // stop briefly, mount, and carry on.
+        if (mountTrip is { } trip && CanMountNow() && now - lastMidRouteMount > TimeSpan.FromSeconds(6)
+            && !Plugin.Condition[ConditionFlag.Casting]
+            && Plugin.ObjectTable.LocalPlayer is { } me
+            && Vector3.Distance(me.Position, trip) > MountDistance + 15f
+            && MountStatus() == 0)
+        {
+            lastMidRouteMount = now;
+            DebugLog.Write($"MOUNT mid-route, {Vector3.Distance(me.Position, trip):F0}y left");
+            Try(() => { pathStop.InvokeAction(); return true; }, false);
+            pendingDestination = trip;
+            mountRequestedAt = now;
+            mountPresses = 0;
+            PressMount();
         }
     }
 
@@ -210,6 +270,7 @@ public sealed unsafe class IpcTravelService : ITravelService
     public void Stop()
     {
         pendingDestination = null;
+        mountTrip = null;
         Try(() => { pathStop.InvokeAction(); return true; }, false);
     }
 

@@ -1,6 +1,7 @@
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
 using System.Collections.Generic;
 using HuntingLogHelper.Core;
 using Lumina.Excel.Sheets;
@@ -21,9 +22,56 @@ public sealed unsafe class BmrRsrCombatController : ICombatController
     {
         Plugin.TargetManager.Target = mob;
         // RSR switches itself off on zone change, so (re)send once per engage, never per frame.
+        TurnOn();
+        DebugLog.Write($"ENGAGE {mob.Name} hp {mob.CurrentHp}/{mob.MaxHp}");
+        Pull(mob);
+        ResetWatch(mob);
+    }
+
+    private static void TurnOn()
+    {
         Plugin.CommandManager.ProcessCommand("/rotation auto");
         Plugin.CommandManager.ProcessCommand("/bmrai on");
-        Pull(mob);
+    }
+
+    // Rotation watchdog: RSR sometimes switches itself off mid-run (its own auto-off rules, a
+    // cutscene/loading flag, another plugin). If the fight makes no progress for a while,
+    // send the commands again. Both commands set a state (not toggle), so re-sending is safe.
+    private static readonly TimeSpan StallWindow = TimeSpan.FromSeconds(5);
+    private ulong watchedId;
+    private uint watchedHp;
+    private DateTime lastProgress = DateTime.UtcNow;
+    private DateTime lastRevive = DateTime.MinValue;
+
+    private void ResetWatch(IBattleNpc? mob)
+    {
+        watchedId = mob?.GameObjectId ?? 0;
+        watchedHp = mob?.CurrentHp ?? 0;
+        lastProgress = DateTime.UtcNow;
+    }
+
+    public void KeepAlive(IBattleNpc? mob)
+    {
+        var now = DateTime.UtcNow;
+        var me = Plugin.ObjectTable.LocalPlayer;
+        // Fight whatever is actually hitting us if our hunt target isn't selectable any more.
+        var target = Plugin.TargetManager.Target as IBattleNpc ?? mob;
+        if (target == null || target.IsDead) { ResetWatch(null); return; }
+        if (target.GameObjectId != watchedId) { ResetWatch(target); return; }
+        if (target.CurrentHp < watchedHp || Plugin.Condition[ConditionFlag.Casting])
+        {
+            watchedHp = Math.Min(watchedHp, target.CurrentHp);
+            lastProgress = now;
+            return;
+        }
+        if (now - lastProgress < StallWindow || now - lastRevive < StallWindow) return;
+
+        lastRevive = now;
+        lastProgress = now;
+        var dist = me == null ? -1f : System.Numerics.Vector3.Distance(me.Position, target.Position);
+        DebugLog.Write($"ROTATION stalled on {target.Name} (hp {target.CurrentHp}/{target.MaxHp}, dist {dist:F1}, target={(Plugin.TargetManager.Target?.Name.TextValue ?? "none")}), re-enabling");
+        Plugin.TargetManager.Target = target;
+        TurnOn();
     }
 
     // Level-1 opener per base class (jobs use their parent class). RSR won't open on passive mobs.

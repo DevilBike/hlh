@@ -363,6 +363,7 @@ public sealed class HuntEngine
         {
             // Keep the hunt target selected; BMR/RSR do the rest.
             if (mob != null && !mob.IsDead && Plugin.TargetManager.Target == null) Plugin.TargetManager.Target = mob;
+            combat.KeepAlive(mob);
             return;
         }
         if (mob != null && !mob.IsDead && DateTime.UtcNow - stateSince < TimeSpan.FromSeconds(8)) return; // pull not started yet

@@ -75,6 +75,8 @@ public interface ICombatController
     void Engage(IBattleNpc mob);
     /// <summary>Start the fight on a passive mob (e.g. auto-attack). Safe to call again if the pull didn't land.</summary>
     void Pull(IBattleNpc mob);
+    /// <summary>Called every frame while in combat: re-enables the rotation if it has stopped acting.</summary>
+    void KeepAlive(IBattleNpc? mob);
     void Disengage();
     /// <summary>After a fight: stop AI movement so only the navmesh moves the character between fights.</summary>
     void StandDown();
