@@ -26,4 +26,19 @@ public sealed class ObjectTableScanner : ITargetScanner
             .Select(x => x.mob)
             .FirstOrDefault();
     }
+
+    public IBattleNpc? FindAttacker(float maxDistance)
+    {
+        var me = Plugin.ObjectTable.LocalPlayer;
+        if (me == null) return null;
+        return Plugin.ObjectTable
+            .OfType<IBattleNpc>()
+            .Where(n => n.TargetObjectId == me.GameObjectId && !n.IsDead && n.IsTargetable && n.CurrentHp > 0
+                        && (byte)n.BattleNpcKind == 5) // 5 = Combatant (enemy)
+            .Select(n => (mob: n, dist: Vector3.Distance(n.Position, me.Position)))
+            .Where(x => x.dist <= maxDistance)
+            .OrderBy(x => x.dist)
+            .Select(x => x.mob)
+            .FirstOrDefault();
+    }
 }

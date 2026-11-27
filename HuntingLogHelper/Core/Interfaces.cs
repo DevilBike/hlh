@@ -65,6 +65,8 @@ public interface ISearchPattern
 public interface ITargetScanner
 {
     IBattleNpc? FindNearest(HuntTarget target, float maxDistance);
+    /// <summary>The closest living enemy that is targeting us, if any.</summary>
+    IBattleNpc? FindAttacker(float maxDistance);
 }
 
 /// <summary>Turns BossMod Reborn / Rotation Solver Reborn on and off and reports fight state.</summary>

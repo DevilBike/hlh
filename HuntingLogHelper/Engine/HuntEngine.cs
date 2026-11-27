@@ -199,6 +199,11 @@ public sealed class HuntEngine
         Learn(pos);
         var range = t.Approximate && area!.Observations == 0 ? 90f : ScanRange;
         var found = scanner.FindNearest(t, range);
+        if (found == null && combat.InCombat && scanner.FindAttacker(AttackerRange) is { } attacker)
+        {
+            DebugLog.Write($"ATTACKED by {attacker.Name} while searching, fighting it");
+            found = attacker;
+        }
         if (found != null && ignored.TryGetValue(found.GameObjectId, out var until) && DateTime.UtcNow < until)
             found = null;
         if (found != null)
@@ -257,6 +262,7 @@ public sealed class HuntEngine
     }
 
     private const float DismountRange = 20f;
+    private const float AttackerRange = 30f;
     private bool pullRetried;
     private DateTime lastPull = DateTime.MinValue;
     private Vector3? searchDest;
@@ -278,9 +284,19 @@ public sealed class HuntEngine
 
         var dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
 
+        // Something else is hitting us on the way: deal with it first (the hunt target is still
+        // counted by Verify, which sends us back to searching if the kill wasn't ours).
+        if (combat.InCombat && scanner.FindAttacker(AttackerRange) is { } attacker && attacker.GameObjectId != mob.GameObjectId)
+        {
+            DebugLog.Write($"ATTACKED by {attacker.Name} while approaching {mob.Name} ({dist:F0}y), fighting it first");
+            mob = attacker;
+            dist = Vector3.Distance(pos, mob.Position) - mob.HitboxRadius;
+        }
+
         // Get off the mount before fighting. Flying needs two presses (land, then dismount),
         // so keep pressing about once a second until the game says we're on foot.
-        if (travel.IsMounted && (dist <= DismountRange || combat.InCombat))
+        // In combat with nothing near us (combat flag from a fight we flew away from), keep flying.
+        if (travel.IsMounted && (dist <= DismountRange || (combat.InCombat && dist <= AttackerRange)))
         {
             if (dismountStarted == DateTime.MinValue) dismountStarted = DateTime.UtcNow;
             StatusText = $"Dismounting near {mob.Name}";
@@ -295,8 +311,9 @@ public sealed class HuntEngine
             }
         }
 
-        if (combat.InCombat)
+        if (combat.InCombat && !travel.IsMounted && dist <= AttackerRange)
         {
+            travel.Stop();
             combat.Engage(mob);
             pullRetried = false;
             Go(HuntState.Fighting, $"Fighting {mob.Name}");
